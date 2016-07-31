@@ -60,12 +60,12 @@ def login():
 
   return render_template('account/login.html', title='Login', form=form)
 
-@app.route('/logout')
+@app.route('/logout/')
 @login_required
 def logout():
   logout_user()
   flash('Logged out successfully', 'success')
-  return redirect(url_for('user_home'))
+  return redirect(url_for('home'))
 
 @lm.user_loader
 def load_user(id):
@@ -73,4 +73,4 @@ def load_user(id):
 
 @app.route('/user_home')
 def user_home():
-  return render_template("/index.html", title="Home")
+  return render_template("account/home.html", title="Home")

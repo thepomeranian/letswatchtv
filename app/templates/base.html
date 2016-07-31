@@ -11,17 +11,20 @@
     <meta name="description" content="Show a TV show's popularity based on tweets on a time series chart.">
     <meta name="viewport" content="width=device-width">
 
+    {# jQuery #}
+    <script src="{{ url_for('static', filename='js/jquery-3.1.0.min.js') }}"></script>
+
     {# Bootstrap css and js #}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='js/bootstrap.min.js') }}">
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 
     {# Toastr css and js #}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='js/toastr.min.js') }}">
+    <script src="{{ url_for('static', filename='js/toastr.min.js') }}"></script>
 
     {# Self-made css and js files #}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='js/main.css') }}">
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
   </head>
   
@@ -44,9 +47,12 @@
         <ul class="nav navbar-nav">
           <li><a href="#">About</a></li>
           <li><a href="#">Wiki</a></li>
-          <li><a href="#">Signup</a></li>
-          <li><a href="#">Login</a></li>
-          <li><a href="#">Logout</a></li>
+            {% if current_user.is_authenticated %}
+              <li><a href="/logout">Logout</a></li>
+            {% else %}
+              <li><a href="/signup">Signup</a></li>
+              <li><a href="/login">Login</a></li>
+            {% endif %}
         </ul>
         <form class="navbar-form navbar-right">
           <div class="form-group">
@@ -62,30 +68,14 @@
   </header>
   <body class="{% block bodyclass %}{% endblock %}">
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        {% for category, message in messages %}
-            <div class="alert alert-{{ category }}">
-              {% if category == "success" %}
-                <span class="glyphicon glyphicon-ok"></span>
-              {% elif category == "info" %}
-                <span class="glyphicon glyphicon-info-sign"></span>
-              {% elif category == "warning" %}
-                <span class="glyphicon glyphicon-exclamation-sign"></span>
-              {% elif category == "danger" %}
-                <span class="glyphicon glyphicon-exclamation-sign"></span>
-              {% endif %}
-              {{ message|safe }}
-            </div>
-        {% endfor %}
-    {% endif %}
-    {% endwith %}
+
     
 
     {% block content %}{% endblock %}
 
   </body>
 
+  {% include "/partials/_messageflash.html" %}
   {% block scriptinclude %}{% endblock %}
   
 </html>

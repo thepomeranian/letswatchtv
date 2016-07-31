@@ -9,6 +9,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 #Global variables to use for role management
 ROLE_ADMIN = 0
 ROLE_USER = 1
+ROLE_MANAGER = 2
 
 class User(db.Model):
     '''
@@ -21,32 +22,39 @@ class User(db.Model):
     created_on = db.Column(db.DateTime)
     updated_on = db.Column(db.DateTime)
     last_logged_in = db.Column(db.DateTime)
+    role = db.Column(db.Integer, default = 1)
     active = db.Column(db.SmallInteger, default = 1)
     first_name = db.Column(db.String(120))
     last_name = db.Column(db.String(120))
 
     def __repr__(self):
-        return '<User %r>' % (self.email)
+      return '<User %r>' % (self.email)
 
     def _set_password(self, password):
         self._password = generate_password_hash(password)
 
     def _get_password(self):
-        return self._password
+      return self._password
 
     password = db.synonym('_password', descriptor=property(_get_password, _set_password))
 
     def valid_password(self, password):
-        return check_password_hash(self._password, password)
+      return check_password_hash(self._password, password)
 
     def is_authenticated(self):
-        return True
+      return True
+
+    def is_admin(self):
+      return True if self.role == 0 else False
 
     def is_active(self):
-        return True if self.active is 1 else False
+      return True if self.active is 1 else False
 
     def is_anonymous(self):
-        return False
+      return False
 
     def get_id(self):
-        return unicode(self.id)
+      return unicode(self.id)
+
+    def get_name(self):
+      return self.first_name + " " + self.last_name
