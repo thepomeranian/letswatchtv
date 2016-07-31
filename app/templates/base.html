@@ -15,13 +15,72 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='js/bootstrap.min.js') }}">
 
+    {# Toastr css and js #}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='js/toastr.min.js') }}">
+
     {# Self-made css and js files #}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='js/main.css') }}">
 
   </head>
   
+  <header>
+    <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Brand</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li><a href="#">About</a></li>
+          <li><a href="#">Wiki</a></li>
+          <li><a href="#">Signup</a></li>
+          <li><a href="#">Login</a></li>
+          <li><a href="#">Logout</a></li>
+        </ul>
+        <form class="navbar-form navbar-right">
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Search">
+          </div>
+          <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+
+<div class="container">
+  </header>
   <body class="{% block bodyclass %}{% endblock %}">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+              {% if category == "success" %}
+                <span class="glyphicon glyphicon-ok"></span>
+              {% elif category == "info" %}
+                <span class="glyphicon glyphicon-info-sign"></span>
+              {% elif category == "warning" %}
+                <span class="glyphicon glyphicon-exclamation-sign"></span>
+              {% elif category == "danger" %}
+                <span class="glyphicon glyphicon-exclamation-sign"></span>
+              {% endif %}
+              {{ message|safe }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+    
 
     {% block content %}{% endblock %}
 
