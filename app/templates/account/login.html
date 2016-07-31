@@ -3,26 +3,29 @@
 {% block bodyclass %}login{% endblock %}
 
 {% block content %}
+<div class="container">
+  <div class="login-container">
 
-<div class="login-container">
+    {% from "/partials/_formhelpers.html" import render_field %}
+    <form action="" method="post" name="login">
+      {{form.csrf_token}}
 
-  {% from "/partials/_formhelpers.html" import render_field %}
-  <form action="" method="post" name="login">
-    {{form.csrf_token}}
-    {# cross site request forgery -- required for WTF #}
-    
-    <div class="input-group input-group-lg input-centered login-input-container">
-      {{render_field(form.email, class='form-control login-input', placeholder='Email')}}
-    </div>
+      {# cross site request forgery -- required for WTF #}
+      
+      <label>Email: </label>
+      <div class="input-group input-group-lg input-centered login-input-container">
+        {{render_field(form.email, class='form-control login-input', placeholder='Email')}}
+      </div><br>
 
-    <div class="input-group input-group-lg input-centered login-input-container">
-     {{render_field(form.password, class='form-control login-input', placeholder='Password')}}
-    </div>
+      <label>Password: </label>
+      <div class="input-group input-group-lg input-centered login-input-container">
+       {{render_field(form.password, class='form-control login-input', placeholder='Password')}}
+      </div><br>
 
-    <button type="submit" class="btn btn-primary login-btn">LOGIN</button>
+      <button type="submit" class="btn btn-primary login-btn">Login</button>
 
-  </form>
-
+    </form>
+  </div>
 </div>
 
 {% endblock %}
