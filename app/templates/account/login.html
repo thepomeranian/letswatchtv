@@ -13,14 +13,17 @@
       {# cross site request forgery -- required for WTF #}
       
       <label>Email: </label>
-      <div class="input-group input-group-lg input-centered login-input-container">
+      <div class="input-group input-group-lg input-centered login-input-container required">
         {{render_field(form.email, class='form-control login-input', placeholder='Email')}}
       </div><br>
 
       <label>Password: </label>
-      <div class="input-group input-group-lg input-centered login-input-container">
+      <div class="input-group input-group-lg input-centered login-input-container required">
        {{render_field(form.password, class='form-control login-input', placeholder='Password')}}
       </div><br>
+
+      {{ form.remember_me }} <label>Remember Me</label><br>
+
 
       <button type="submit" class="btn btn-primary login-btn">Login</button>
 

@@ -6,7 +6,7 @@ from wtforms.validators import Required, Optional, NumberRange, Email, EqualTo
 class LoginForm(Form):
   email = StringField('email', validators = [Required()])
   password = PasswordField('password', validators = [Required()])
-  remember = BooleanField('remember', default = False)
+  remember_me = BooleanField('remember_me', default = False)
 
 
 # Sign Up Form class with form validation
