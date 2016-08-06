@@ -64,22 +64,7 @@ def signup():
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
   """Checks if the current_user is logged in, if so, redirect to user's
-    homepage. Handles user login, remember me, and check authentication
-
-  Create an instance of LoginForm
-
-  Check if the form is properly filled it upon submission
-    if so, look for the user by using query method to look in the database
-    of users by email address and return the first response
-
-  If the user exists and the user provides the correct password
-    Check if the user asked to remember the user, if so, keep the session
-    longer (from docs)
-  
-    --add remember me checkbox
-
-  """
-  # Already logged in; return to index
+    homepage. """
   if current_user.is_authenticated:
     return redirect(url_for('user_home'))
 
@@ -89,7 +74,6 @@ def login():
 
     if user is not None and user.valid_password(form.password.data):
       if login_user(user, remember = form.remember_me.data):
-        # session['remember_me'] = form.remember.data
         session.permanent = not form.remember_me.data
         user.created_on = datetime.datetime.now()
         user.last_logged_in = datetime.datetime.now()
