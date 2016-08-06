@@ -3,7 +3,14 @@
 {% block content %}
 
 <div class="container">
-  Results 
+  <h1>Results</h1>
+  <ul>
+    {% for tvshow in tvshows %}
+
+    <li>{{ tvshow.name }}</li>
+
+    {% endfor %}
+  </ul>
 </div>
 
 {% endblock %}

@@ -14,11 +14,12 @@ def home():
                           title="Home")
 
 
-@app.route('/search-results')
+@app.route('/tvshows')
 def search_results():
   """Returns a result page from search query"""
+  tvshows = TVShow.query.all()
   return render_template("results.html", 
-                          title="Results")
+                          title="Results", tvshows=tvshows)
 
 
 @app.route('/about')
