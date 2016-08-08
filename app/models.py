@@ -12,10 +12,8 @@ ROLE_USER = 1
 ROLE_MANAGER = 2
 
 class User(db.Model):
-  '''
-  The User Model
-  '''
-  #__tablename__ = 'user'
+  """The User Model"""
+  __tablename__ = 'users'
   id = db.Column(db.Integer, primary_key = True)
   email = db.Column(db.String(120), nullable = False, index = True, unique = True)
   _password = db.Column('password', db.String(120), nullable = False)
@@ -60,11 +58,19 @@ class User(db.Model):
     return self.first_name + " " + self.last_name
 
 class TVShow(db.Model):
-  """
-    The TVShow model
-  """
+  """The TVShow model"""
+
   __tablename__ = 'tvshows'
+  id = db.Column(db.Integer, autoincrement=True)
+  name = db.Column(db.String(300), nullable=False, primary_key=True)
+  
+  
+class Tweets(db.Model):
+  """The Tweets model"""
+
+  __tablename__ = 'tweets'
   id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-  name = db.Column(db.String(300), nullable=False)
-  
-  
+  username = db.Column(db.String(100), nullable=False)
+  location = db.Column(db.String(100), nullable=False)
+  created_at = db.Column(db.DateTime, nullable=False)
+  text = db.Column(db.String(200), nullable=False)
