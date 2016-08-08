@@ -61,8 +61,8 @@ class TVShow(db.Model):
   """The TVShow model"""
 
   __tablename__ = 'tvshows'
-  id = db.Column(db.Integer, autoincrement=True)
-  name = db.Column(db.String(300), nullable=False, primary_key=True)
+  id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+  name = db.Column(db.String(300), nullable=False)
   
   
 class Tweets(db.Model):
