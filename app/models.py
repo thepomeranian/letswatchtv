@@ -71,6 +71,6 @@ class Tweets(db.Model):
   __tablename__ = 'tweets'
   id = db.Column(db.Integer, autoincrement=True, primary_key=True)
   username = db.Column(db.String(100), nullable=False)
-  location = db.Column(db.String(100), nullable=False)
+  location = db.Column(db.String(100), nullable=True)
   created_at = db.Column(db.DateTime, nullable=False)
   text = db.Column(db.String(200), nullable=False)
