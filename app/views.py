@@ -15,35 +15,47 @@ def home():
 
 
 @app.route('/tvshows')
-def search_results():
+def tvshows():
   """Returns a result page from search query"""
   tvshows = TVShow.query.all()
-  return render_template("results.html", 
-                          title="Results", tvshows=tvshows)
+  return render_template("tvshows/tvshows.html", 
+                          title="Results", 
+                          tvshows=tvshows)
+
+@app.route('/tvshow_details/<tvshow_name>')
+def tvshow_details(tvshow_name):
+  """Returns details about a particular tvshow and tweets about the show this week"""
+  tweets = Tweets.query.all()
+
+  return render_template("tvshows/tvshow_details.html", 
+                          title=tvshow_name, 
+                          tvshow_name=tvshow_name,
+                          tweets=tweets)
+
 
 
 @app.route('/about')
-def about_page():
+def about():
   """Returns a page about Let's Watch TV """
 
   return render_template("about/about.html")
 
 
-@app.route('/user_home')
-def user_home():
+@app.route('/profile')
+def profile():
   """Returns user's homepage/landing page"""
 
-  return render_template("account/home.html", 
+  return render_template("account/profile.html", 
                           title="Home")
 
 
-@app.route('/signup', methods = ['GET', 'POST'])
-def signup():
+@app.route('/register', methods = ['GET', 'POST'])
+def register():
   """Checks if the current_user is logged in or render a signup form 
   and add the new user to the database and redirect them to their profile."""
 
   if current_user.is_authenticated:
-    return redirect(url_for('user_home'))
+    return redirect(url_for('profile'))
 
   form = SignUpForm(request.form)
   if form.validate_on_submit():
@@ -55,10 +67,10 @@ def signup():
     db.session.commit()
     login_user(user)    
     flash("You're in the club", 'success')
-    return redirect(url_for('user_home'))
+    return redirect(url_for('profile'))
 
-  return render_template('account/signup.html', 
-                          title='Sign Up', 
+  return render_template('account/register.html', 
+                          title='Register', 
                           form=form)
 
 
@@ -67,7 +79,7 @@ def login():
   """Checks if the current_user is logged in, if so, redirect to user's
     homepage. """
   if current_user.is_authenticated:
-    return redirect(url_for('user_home'))
+    return redirect(url_for('profile'))
 
   form = LoginForm()
   if form.validate_on_submit():
@@ -81,7 +93,7 @@ def login():
         db.session.commit()
         flash('Logged in successfully!', category = 'success')
 
-        return redirect(request.args.get('next') or url_for('user_home'))
+        return redirect(request.args.get('next') or url_for('profile'))
 
       else:
         flash('This username is disabled', 'danger')
