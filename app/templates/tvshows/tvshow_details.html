@@ -7,7 +7,7 @@
   <ul>
     {% for tweet in tweets %}
 
-    <li>{{ tweet.username }} says {{ tweet.text }}</li>
+    <li>{{ tweet.username }} <b>says</b> {{ tweet.text }} <b>at</b> {{ tweet.created_at }}</li>
 
     {% endfor %}
   </ul>

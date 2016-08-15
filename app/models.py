@@ -13,6 +13,7 @@ ROLE_MANAGER = 2
 
 class User(db.Model):
   """The User Model"""
+  
   __tablename__ = 'users'
   id = db.Column(db.Integer, primary_key = True)
   email = db.Column(db.String(120), nullable = False, index = True, unique = True)
@@ -62,9 +63,66 @@ class TVShow(db.Model):
 
   __tablename__ = 'tvshows'
   id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-  name = db.Column(db.String(300), nullable=False)
+  tvshow = db.Column(db.String(300), nullable=False)
+  type_ = db.Column(db.String(300), nullable=False)
+  language = db.Column(db.String(300), nullable=False)
+  genres = db.Column(db.String(300), nullable=False)
+  status = db.Column(db.String(300), nullable=False)
+  runtime = db.Integer
+  premiered = db.Column(db.String(300), nullable=False)
+  schedule_time = db.Column(db.String(20), nullable=False)
+  schedule_day = db.Column(db.String(15), nullable=False)
+  rating = db.Integer
+  twitter_handle = db.Column(db.String(100), nullable=True)
+  network = db.Column(db.String(100), db.ForeignKey('networks.network_name'))
+  summary = db.Column(db.String(5000), nullable=False)
+
   
+
+class Actors(db.Model):
+  """The Actors model"""
+
+  __tablename__ = 'actors'
+  id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+  first_name = db.Column(db.String(100), nullable=False)
+  last_name = db.Column(db.String(150), nullable=False)
+  gender = db.Column(db.String(10), nullable=False)
+  date_of_birth = db.Column(db.String(100))
+  imdb_url = db.Column(db.String(1000))
+  horoscope = db.Column(db.String(50))
+  height = db.Column(db.String(10))
+
+    
+class TVShowPhoto(db.Model):
+  """The TVShowPhoto model"""
+
+  __tablename__ = "photos"
+  id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+  tvshow = db.Column(db.String(300), db.ForeignKey('tvshows.tvshow'))
+  medium_url = db.Column(db.String(1000))
+  original_url = db.Column(db.String(1000))
+
+
+class Network(db.Model)
+  """The Network model"""
+
+  __tablename__ = 'networks'
+  id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+  network_name = db.Column(db.String(100), nullable=False)
+  code = db.Integer
+  timezone = db.Column(db.String(100))
+
+
+class Externals(db.Model)
+  """The Externals model"""
+
+  __tablename__ = 'externals'
+  tvshow = db.Column(db.String(300), db.ForeignKey('tvshows.tvshow'))
+  tvrage = db.Column(db.String(100))
+  thetvdb = db.Column(db.String(100))
+  imdb = db.Column(db.String(100))
   
+
 class Tweets(db.Model):
   """The Tweets model"""
 
@@ -73,4 +131,5 @@ class Tweets(db.Model):
   username = db.Column(db.String(100), nullable=False)
   location = db.Column(db.String(100), nullable=True)
   created_at = db.Column(db.DateTime, nullable=False)
-  text = db.Column(db.String(200), nullable=False)
+  text = db.Column(db.String(512), nullable=False)
+  keyword = db.Column(db.String(100), nullable=True)
