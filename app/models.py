@@ -11,6 +11,7 @@ ROLE_ADMIN = 0
 ROLE_USER = 1
 ROLE_MANAGER = 2
 
+
 class User(db.Model):
   """The User Model"""
 
@@ -58,6 +59,7 @@ class User(db.Model):
   def get_name(self):
     return self.first_name + " " + self.last_name
 
+
 class TVShow(db.Model):
   """The TVShow model"""
 
@@ -74,10 +76,13 @@ class TVShow(db.Model):
   schedule_day = db.Column(db.String(15), nullable=False)
   rating = db.Integer
   twitter_handle = db.Column(db.String(100), nullable=True)
-  network = db.Column(db.String(100), db.ForeignKey('networks.network_name'))
+  network_id = db.Column(db.Integer, db.ForeignKey('networks.id'))
   summary = db.Column(db.String(5000), nullable=False)
+  
+  tvshow_photos = db.relationship('TVShowPhoto', backref='tvshow_photos', lazy=dynamic)
+  externals = db.relationship('External', backref='externals', lazy=dynamic)
+  tweets = db.relationship('Tweet', backref='tweets', lazy=dynamic)
 
-  network = db.relationship('Network', backref='tvshows')
 
 class Actors(db.Model):
   """The Actors model"""
@@ -92,18 +97,17 @@ class Actors(db.Model):
   horoscope = db.Column(db.String(50))
   height = db.Column(db.String(10))
 
-      
 
 class TVShowPhoto(db.Model):
   """The TVShowPhoto model"""
 
   __tablename__ = "tvshow_photos"
   id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-  tvshow = db.Column(db.String(300), db.ForeignKey('tvshows.tvshow'))
+  tvshow = db.Column(db.Integer, db.ForeignKey('tvshow_photos.id'))
   medium_url = db.Column(db.String(1000))
   original_url = db.Column(db.String(1000))
 
-  tvshow = db.relationship('TVShow', backref='tvshow_photos')
+  
 
 class Network(db.Model):
   """The Network model"""
@@ -114,20 +118,21 @@ class Network(db.Model):
   code = db.Integer
   timezone = db.Column(db.String(100))
 
+  tvshows = db.relationship('TVShow', backref='networks', lazy=dynamic)
+
 
 class External(db.Model):
   """The Externals model"""
 
   __tablename__ = 'externals'
   id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-  tvshow = db.Column(db.String(300), db.ForeignKey('tvshows.tvshow'))
+  tvshow = db.Column(db.Integer, db.ForeignKey('externals.id'))
   tvrage = db.Column(db.String(100))
   thetvdb = db.Column(db.String(100))
   imdb = db.Column(db.String(100))
   
-  tvshow = db.relationship('TVShow', backref='externals')
 
-class Tweets(db.Model):
+class Tweet(db.Model):
   """The Tweets model"""
 
   __tablename__ = 'tweets'
@@ -136,4 +141,5 @@ class Tweets(db.Model):
   location = db.Column(db.String(100), nullable=True)
   created_at = db.Column(db.DateTime, nullable=False)
   text = db.Column(db.String(512), nullable=False)
-  keyword = db.Column(db.String(100), nullable=True)
+  tvshow = db.Column(db.Integer, db.ForeignKey('tweets'))
+
