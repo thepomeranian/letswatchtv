@@ -3,13 +3,21 @@
 {% block content %}
 
 <div class="container">
-  <h1>{{ tvshow_name }}</h1>
+  <h1>{{ tvshow_details.tvshow }}</h1>
   <ul>
-    {% for tweet in tweets %}
+    
+    
+    <li>TVShow: {{ tvshow_details.tvshow }}</li>
+    <li>Type: {{ tvshow_details.type_ }}</li>
+    <li>Language: {{ tvshow_details.language }}</li>
+    <li>Genres: {{ tvshow_details.genres }}</li>
+    <li>Status: {{ tvshow_details.status }}</li>
+    <li>Original Premiere Date: {{ tvshow_details.premiered }}</li>
+    <li>Scheduled: {{ tvshow_details.day }} {{ tvshow_details.time }}</li>
+    <li>Twitter Handle: {{ tvshow_details.twitter_handle }}</li>
+    <li>Network Information: {{ tvshow_details.network_id }}</li>
+    <li>Summary: {{ tvshow_details.summary|safe }}</li>
 
-    <li>{{ tweet.username }} <b>says</b> {{ tweet.text }} <b>at</b> {{ tweet.created_at }}</li>
-
-    {% endfor %}
   </ul>
 </div>
 
