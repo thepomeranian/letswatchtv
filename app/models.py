@@ -65,19 +65,19 @@ class TVShow(db.Model):
 
   __tablename__ = 'tvshows'
   id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-  tvshow = db.Column(db.String(300), nullable=False)
-  type_ = db.Column(db.String(300), nullable=False)
-  language = db.Column(db.String(300), nullable=False)
-  genres = db.Column(db.String(300), nullable=False)
-  status = db.Column(db.String(300), nullable=False)
+  tvshow = db.Column(db.String(300))
+  type_ = db.Column(db.String(300))
+  language = db.Column(db.String(300))
+  genres = db.Column(db.String(500))
+  status = db.Column(db.String(300))
   runtime = db.Integer
-  premiered = db.Column(db.String(300), nullable=False)
-  schedule_time = db.Column(db.String(20), nullable=False)
-  schedule_day = db.Column(db.String(15), nullable=False)
+  premiered = db.Column(db.String(300))
+  schedule_time = db.Column(db.String(100))
+  schedule_day = db.Column(db.String(200))
   rating = db.Integer
-  twitter_handle = db.Column(db.String(100), nullable=True)
+  twitter_handle = db.Column(db.String(150))
   network_id = db.Column(db.Integer, db.ForeignKey('networks.id'))
-  summary = db.Column(db.String(5000), nullable=False)
+  summary = db.Column(db.String(10000))
   
   tvshow_photos = db.relationship('TVShowPhoto', backref='tvshow_photos', lazy='dynamic')
   externals = db.relationship('External', backref='externals', lazy='dynamic')
@@ -114,9 +114,10 @@ class Network(db.Model):
 
   __tablename__ = 'networks'
   id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-  network_name = db.Column(db.String(100), nullable=False)
-  code = db.Integer
-  timezone = db.Column(db.String(100))
+  network_name = db.Column(db.String(100))
+  country = db.Column(db.String(150))
+  code = db.Column(db.String(5))
+  timezone = db.Column(db.String(200))
 
   tvshows = db.relationship('TVShow', backref='tvshows', lazy='dynamic')
 
@@ -137,9 +138,9 @@ class Tweets(db.Model):
 
   __tablename__ = 'tweets'
   id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-  username = db.Column(db.String(100), nullable=False)
-  location = db.Column(db.String(100), nullable=True)
-  created_at = db.Column(db.DateTime, nullable=False)
-  text = db.Column(db.String(512), nullable=False)
+  username = db.Column(db.String(100))
+  location = db.Column(db.String(100))
+  created_at = db.Column(db.DateTime)
+  text = db.Column(db.String(512))
   tvshow_id = db.Column(db.Integer, db.ForeignKey('tvshows.id'))
 
