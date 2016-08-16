@@ -79,9 +79,9 @@ class TVShow(db.Model):
   network_id = db.Column(db.Integer, db.ForeignKey('networks.id'))
   summary = db.Column(db.String(5000), nullable=False)
   
-  tvshow_photos = db.relationship('TVShowPhoto', backref='tvshow_photos', lazy=dynamic)
-  externals = db.relationship('External', backref='externals', lazy=dynamic)
-  tweets = db.relationship('Tweet', backref='tweets', lazy=dynamic)
+  tvshow_photos = db.relationship('TVShowPhoto', backref='tvshow_photos', lazy='dynamic')
+  externals = db.relationship('External', backref='externals', lazy='dynamic')
+  tweets = db.relationship('Tweets', backref='tweets', lazy='dynamic')
 
 
 class Actors(db.Model):
@@ -103,7 +103,7 @@ class TVShowPhoto(db.Model):
 
   __tablename__ = "tvshow_photos"
   id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-  tvshow = db.Column(db.Integer, db.ForeignKey('tvshow_photos.id'))
+  tvshow_id = db.Column(db.Integer, db.ForeignKey('tvshows.id'))
   medium_url = db.Column(db.String(1000))
   original_url = db.Column(db.String(1000))
 
@@ -118,7 +118,7 @@ class Network(db.Model):
   code = db.Integer
   timezone = db.Column(db.String(100))
 
-  tvshows = db.relationship('TVShow', backref='networks', lazy=dynamic)
+  tvshows = db.relationship('TVShow', backref='tvshows', lazy='dynamic')
 
 
 class External(db.Model):
@@ -126,13 +126,13 @@ class External(db.Model):
 
   __tablename__ = 'externals'
   id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-  tvshow = db.Column(db.Integer, db.ForeignKey('externals.id'))
+  tvshow_id = db.Column(db.Integer, db.ForeignKey('tvshows.id'))
   tvrage = db.Column(db.String(100))
   thetvdb = db.Column(db.String(100))
   imdb = db.Column(db.String(100))
   
 
-class Tweet(db.Model):
+class Tweets(db.Model):
   """The Tweets model"""
 
   __tablename__ = 'tweets'
@@ -141,5 +141,5 @@ class Tweet(db.Model):
   location = db.Column(db.String(100), nullable=True)
   created_at = db.Column(db.DateTime, nullable=False)
   text = db.Column(db.String(512), nullable=False)
-  tvshow = db.Column(db.Integer, db.ForeignKey('tweets'))
+  tvshow_id = db.Column(db.Integer, db.ForeignKey('tvshows.id'))
 
