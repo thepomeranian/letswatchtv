@@ -13,7 +13,7 @@ ROLE_MANAGER = 2
 
 class User(db.Model):
   """The User Model"""
-  
+
   __tablename__ = 'users'
   id = db.Column(db.Integer, primary_key = True)
   email = db.Column(db.String(120), nullable = False, index = True, unique = True)
@@ -77,7 +77,7 @@ class TVShow(db.Model):
   network = db.Column(db.String(100), db.ForeignKey('networks.network_name'))
   summary = db.Column(db.String(5000), nullable=False)
 
-  
+  network = db.relationship('Network', backref='tvshows')
 
 class Actors(db.Model):
   """The Actors model"""
@@ -92,18 +92,20 @@ class Actors(db.Model):
   horoscope = db.Column(db.String(50))
   height = db.Column(db.String(10))
 
-    
+      
+
 class TVShowPhoto(db.Model):
   """The TVShowPhoto model"""
 
-  __tablename__ = "photos"
+  __tablename__ = "tvshow_photos"
   id = db.Column(db.Integer, autoincrement=True, primary_key=True)
   tvshow = db.Column(db.String(300), db.ForeignKey('tvshows.tvshow'))
   medium_url = db.Column(db.String(1000))
   original_url = db.Column(db.String(1000))
 
+  tvshow = db.relationship('TVShow', backref='tvshow_photos')
 
-class Network(db.Model)
+class Network(db.Model):
   """The Network model"""
 
   __tablename__ = 'networks'
@@ -113,15 +115,17 @@ class Network(db.Model)
   timezone = db.Column(db.String(100))
 
 
-class Externals(db.Model)
+class External(db.Model):
   """The Externals model"""
 
   __tablename__ = 'externals'
+  id = db.Column(db.Integer, autoincrement=True, primary_key=True)
   tvshow = db.Column(db.String(300), db.ForeignKey('tvshows.tvshow'))
   tvrage = db.Column(db.String(100))
   thetvdb = db.Column(db.String(100))
   imdb = db.Column(db.String(100))
   
+  tvshow = db.relationship('TVShow', backref='externals')
 
 class Tweets(db.Model):
   """The Tweets model"""
