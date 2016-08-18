@@ -4,10 +4,10 @@
 
 <div class="container">
   <h1>{{ tvshow_details.tvshow }}</h1>
+
+  <!-- photo of tv show -->
   <ul>
     
-    
-    <li>TVShow: {{ tvshow_details.tvshow }}</li>
     <li>Type: {{ tvshow_details.type_ }}</li>
     <li>Language: {{ tvshow_details.language }}</li>
     <li>Genres: {{ tvshow_details.genres }}</li>
@@ -19,6 +19,13 @@
     <li>Summary: {{ tvshow_details.summary|safe }}</li>
 
   </ul>
+
+  <!-- scrollable photos of tvshows -->
+  <!-- actors -->
+  {% if hide==True %}
+  <a class="twitter-timeline" data-width="400" data-height="500" data-link-color="#2B7BB9" href="https://twitter.com/{{ tvshow_details.twitter_handle }}">Tweets by {{ tvshow_details.tvshow }} </a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+  {% endif %}
+
 </div>
 
 {% endblock %}
