@@ -13,17 +13,25 @@
     <li>Genres: {{ tvshow_details.genres }}</li>
     <li>Status: {{ tvshow_details.status }}</li>
     <li>Original Premiere Date: {{ tvshow_details.premiered }}</li>
-    <li>Scheduled: {{ tvshow_details.day }} {{ tvshow_details.time }}</li>
+    <li>Scheduled: {{ tvshow_details.schedule_day }} at {{ tvshow_details.schedule_time }}</li>
     <li>Twitter Handle: {{ tvshow_details.twitter_handle }}</li>
-    <li>Network Information: {{ tvshow_details.network_id }}</li>
+    <li>Network Information: {{ network }}</li>
     <li>Summary: {{ tvshow_details.summary|safe }}</li>
 
   </ul>
 
   <!-- scrollable photos of tvshows -->
   <!-- actors -->
+
   {% if hide==True %}
-  <a class="twitter-timeline" data-width="400" data-height="500" data-link-color="#2B7BB9" href="https://twitter.com/{{ tvshow_details.twitter_handle }}">Tweets by {{ tvshow_details.tvshow }} </a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+  
+  <a class="twitter-timeline" data-width="400" data-height="500" data-link-color="#2B7BB9" href="https://twitter.com/{{ tvshow_details.twitter_handle }}">Tweets by {{ tvshow_details.tvshow }}</a>
+
+  <a href="https://twitter.com/intent/tweet?screen_name={{ tvshow_details.twitter_handle }}" class="twitter-mention-button" data-show-count="false">Tweet to @{{ tvshow_details.twitter_handle }}</a>
+
+  <a href="https://twitter.com/{{ tvshow_details.twitter_handle }}" class="twitter-follow-button" data-show-count="false">Follow @{{ tvshow_details.twitter_handle }}</a>
+
+  <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
   {% endif %}
 
 </div>

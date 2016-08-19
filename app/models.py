@@ -82,8 +82,9 @@ class TVShow(db.Model):
   tvshow_photos = db.relationship('TVShowPhoto', backref='tvshow_photos', lazy='dynamic')
   externals = db.relationship('External', backref='externals', lazy='dynamic')
   tweets = db.relationship('Tweets', backref='tweets', lazy='dynamic')
+  seasons = db.relationship('Season', backref='seasons', lazy='dynamic')
 
-
+    
 class Actors(db.Model):
   """The Actors model"""
 
@@ -96,6 +97,19 @@ class Actors(db.Model):
   imdb_url = db.Column(db.String(1000))
   horoscope = db.Column(db.String(50))
   height = db.Column(db.String(10))
+
+
+class Season(db.Model):
+  """The Season model"""
+  __tablename__ = 'seasons'
+  id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+  tvshow_id = db.Column(db.Integer, db.ForeignKey('tvshows.id'))
+  season_number = db.Column(db.Integer)
+  total_episodes = db.Column(db.Integer)
+  network_id = db.Column(db.Integer, db.ForeignKey('networks.id'))
+  premiere_date = db.Column(db.String(15))
+  end_date = db.Column(db.String(15))
+  season_photo = db.Column(db.String(1000))
 
 
 class TVShowPhoto(db.Model):

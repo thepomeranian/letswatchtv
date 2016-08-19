@@ -24,20 +24,20 @@ def tvshows():
 
 @app.route('/tvshows/<tvshow_id>')
 def tvshow_details(tvshow_id):
-  hide = True
   """Returns details about a particular tvshow and tweets about the show this week"""
-  # tweets = Tweets.query.all()
-  tvshow_details = TVShow.query.filter_by(id=tvshow_id).all()
-  # sample = {"id":250,"url":"http://www.tvmaze.com/shows/250/kirby-buckets","name":"Kirby Buckets","type":"Scripted","language":"English","genres":["Comedy"],"status":"Running","runtime":30,"premiered":"2014-10-20","schedule":{"time":"20:00","days":["Wednesday"]},"rating":{"average":null},"weight":1,"network":{"id":25,"name":"Disney XD","country":{"name":"United States","code":"US","timezone":"America/New_York"}},"webChannel":null,"externals":{"tvrage":37394,"thetvdb":278449,"imdb":"tt3544772"},"image":{"medium":"http://tvmazecdn.com/uploads/images/medium_portrait/1/4600.jpg","original":"http://tvmazecdn.com/uploads/images/original_untouched/1/4600.jpg"},"summary":"The single-camera series that mixes live-action and animation stars Jacob Bertrand as the title character. \"Kirby Buckets\" introduces viewers to the vivid imagination of charismatic 13-year-old Kirby Buckets, who dreams of becoming a famous animator like his idol, Mac MacCallister. With his two best friends, Fish and Eli, by his side, Kirby navigates his eccentric town of Forest Hills where the trio usually find themselves trying to get out of a predicament before Kirby's sister, Dawn, and her best friend, Belinda, catch them. Along the way, Kirby is joined by his animated characters, each with their own vibrant personality that only he and viewers can see.","updated":1469967834,"_links":{"self":{"href":"http://api.tvmaze.com/shows/250"},"previousepisode":{"href":"http://api.tvmaze.com/episodes/855107"},"nextepisode":{"href":"http://api.tvmaze.com/episodes/880557"}}}
-  print tvshow_details
+  hide = True
+  tvshow_details = TVShow.query.filter_by(id=tvshow_id).one()
+  network = Network.query.filter_by(id=tvshow_details.network_id).one()
+  print network.network_name
 
-  if not tvshow_details[0].twitter_handle:
+  if not tvshow_details.twitter_handle:
     hide = False
   return render_template("tvshows/tvshow_details.html", 
-                          title=tvshow_details[0].tvshow, 
+                          title=tvshow_details.tvshow, 
                           tvshow_name=tvshow_id,
+                          network=network.network_name,
                           hide=hide,
-                          tvshow_details=tvshow_details[0])
+                          tvshow_details=tvshow_details)
 
 
 @app.route('/about')
