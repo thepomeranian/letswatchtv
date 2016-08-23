@@ -16,16 +16,19 @@ def get_or_create(session, model, **kwargs):
 
 def seed():
 """Seeds db using the request library and TVmaze API"""
-  
+  resp_count = 0
+  page_count = 0
   for x in xrange(0,81):
     print "Seeding TVmaze page", x
-
+    page_count += 1
     r = requests.get(
       "http://api.tvmaze.com/shows?page=%d" % x)
 
     response = r.json() 
 
-    for tvshow_obj in response:                   
+    for tvshow_obj in response:    
+      resp_count += 1
+      print resp_count               
       schedule      = tvshow_obj['schedule']
       days          = schedule['days']
       string_days   = schedule_days(days)
