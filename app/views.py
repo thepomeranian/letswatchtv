@@ -25,9 +25,9 @@ def tvshows():
 @app.route('/tvshows/<tvshow_id>')
 def tvshow_details(tvshow_id):
   """Returns details about a particular tvshow and tweets about the show this week"""
-  hide = True
+  hide           = True
   tvshow_details = TVShow.query.filter_by(id=tvshow_id).one()
-  network = Network.query.filter_by(id=tvshow_details.network_id).one()
+  network        = Network.query.filter_by(id=tvshow_details.network_id).one()
   print network.network_name
 
   if not tvshow_details.twitter_handle:
@@ -93,9 +93,9 @@ def login():
 
     if user is not None and user.valid_password(form.password.data):
       if login_user(user, remember = form.remember_me.data):
-        session.permanent = not form.remember_me.data
-        user.created_on = datetime.datetime.now()
-        user.last_logged_in = datetime.datetime.now()
+        session.permanent            = not form.remember_me.data
+        user.created_on              = datetime.datetime.now()
+        user.last_logged_in          = datetime.datetime.now()
         db.session.commit()
         flash('Logged in successfully!', category = 'success')
 

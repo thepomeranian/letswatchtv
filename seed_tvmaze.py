@@ -26,10 +26,10 @@ def seed():
     response = r.json() 
 
     for tvshow_obj in response:                   
-      schedule = tvshow_obj['schedule']
-      days = schedule['days']
-      string_days = schedule_days(days)
-      externals = tvshow_obj['externals']
+      schedule      = tvshow_obj['schedule']
+      days          = schedule['days']
+      string_days   = schedule_days(days)
+      externals     = tvshow_obj['externals']
       string_genres = ""
 
       if tvshow_obj['genres']:
@@ -41,7 +41,7 @@ def seed():
       if tvshow_obj['network']:
         network_info = tvshow_obj['network']
         country_info = network_info['country']
-        network = get_or_create(db.session, models.Network,
+        network      = get_or_create(db.session, models.Network,
                                network_name=network_info['name'], 
                                country=country_info['name'], 
                                code=country_info['code'], 
@@ -83,7 +83,7 @@ def seed():
 def schedule_days(days):
   """Changes list to printed string"""
   # Combine with stringing genres if time allows
-  length = len(days)
+  length      = len(days)
   string_days = ""
   while length > 0:
 
