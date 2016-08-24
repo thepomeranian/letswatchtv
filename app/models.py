@@ -78,9 +78,12 @@ class TVShow(db.Model):
   twitter_handle = db.Column(db.String(150))
   network_id     = db.Column(db.Integer, db.ForeignKey('networks.id'))
   summary        = db.Column(db.String(10000))
+  cast           = db.Column(db.String(5000))
+  characters     = db.Column(db.String(5000))
   
   tvshow_photos  = db.relationship('TVShowPhoto', backref='tvshow_photos', lazy='dynamic')
   seasons        = db.relationship('Season', backref='seasons', lazy='dynamic')
+  episodes        = db.relationship('Episode', backref='episodes', lazy='dynamic')
   externals      = db.relationship('External', backref='externals', lazy='dynamic')
   tweets         = db.relationship('Tweets', backref='tweets', lazy='dynamic')
 
@@ -116,6 +119,7 @@ class Episode(db.Model):
   """The Episode model"""
   __tablename__  = 'episodes'
   id             = db.Column(db.Integer, autoincrement=True, primary_key=True)
+  tvshow_id     = db.Column(db.Integer, db.ForeignKey('tvshows.id'))
   episode_name   = db.Column(db.String(500))
   season_number  = db.Column(db.Integer)
   episode_number = db.Column(db.Integer)

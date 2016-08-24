@@ -3,24 +3,22 @@ from app import models, db
 
 
 def get_or_create(session, model, **kwargs):
-"""Checks db for same entry, if duplicate entry does not exist, insert a new entry"""
-    instance = session.query(model).filter_by(**kwargs).first()
-    if instance:
-        return instance
-    else:
-        instance = model(**kwargs)
-        session.add(instance)
-        session.commit()
-        return instance
+  """Checks db for same entry, if duplicate entry does not exist, insert a new entry"""
+  instance = session.query(model).filter_by(**kwargs).first()
+  if instance:
+      return instance
+  else:
+      instance = model(**kwargs)
+      session.add(instance)
+      session.commit()
+      return instance
 
 
 def seed():
-"""Seeds db using the request library and TVmaze API"""
+  """Seeds db using the request library and TVmaze API"""
   resp_count = 0
-  page_count = 0
   for x in xrange(0,81):
     print "Seeding TVmaze page", x
-    page_count += 1
     r = requests.get(
       "http://api.tvmaze.com/shows?page=%d" % x)
 
@@ -53,7 +51,6 @@ def seed():
       tvshow = models.TVShow(tvshow=tvshow_obj['name'], 
                              type_=tvshow_obj['type'], 
                              language=tvshow_obj['language'],
-                             genres=string_genres,
                              status=tvshow_obj['status'],
                              premiered=tvshow_obj['premiered'],
                              schedule_time=schedule['time'],
@@ -81,6 +78,206 @@ def seed():
                                  thetvdb=externals['thetvdb'], 
                                  imdb=externals['imdb'])
       add_to_db(external)
+
+      if externals['imdb']:
+        
+        r2 = requests.get("http://api.tvmaze.com/lookup/shows?imdb=%s" % externals['imdb'])
+
+        response2 = r2.json() 
+        tvshow_genres_rating_runtime = models.TVShow(genres=response2['genres'],
+                                      rating=response2['rating'],
+                                      runtime=response2['runtime']
+                                      )
+        add_to_db(tvshow_genres_rating_runtime)
+
+        api_show_id = response2['id']
+
+        r3 = requests.get("http://api.tvmaze.com/shows/%d/seasons" % api_show_id)
+
+        seasons = r3.json() 
+        for season in seasons:
+          season_model = models.Season(tvshow_id=tvshow.id,
+                                      season_number=season['id'],
+                                      total_episodes=season['episodeOrder'],
+                                      premiere_date=season['premiereDate'],
+                                      end_date=season['endDate'],
+                                      season_photo=season['image'])
+
+        add_to_db(season_model)
+
+        r4 = requests.get("http://api.tvmaze.com/shows/%d/episodes" % api_show_id)
+        
+        episodes = r4.json()
+
+        for episode in episodes:
+          episode_images = episode['image']
+          episode_model = models.Episode(tvshow_id=tvshow.id,
+                                        episode_name=episode['name'],
+                                         season_number=episode['season'],
+                                         episode_number=episode['number'],
+                                         airdate=episode['airdate'],
+                                         airtime=episode['airtime'],
+                                         airstamp=episode['airstamp'],
+                                         runtime=episode['runtime'],
+                                         image=episode_images['original'],
+                                         summary=episode['summary'])
+        
+          add_to_db(episode_model)
+
+        r5 = requests.get("http://api.tvmaze.com/shows/%d/cast" % api_show_id)
+
+        all_cast_info = r5.json()
+
+        actor_list = []
+        character_list = []
+
+        for cast_info in all_cast_info:
+          
+          actor_info = cast_info['person']
+          for detail in actor_info:
+            actor_list.append(detail['name'])
+
+          character_info = cast_info['character']
+          for detail in character_info:
+            character_list.append(['name'])
+
+        tvshow_actors = models.TVShow(cast=actor_list,
+                                      characters=character_list)
+        add_to_db(tvshow_actors)
+
+      elif externals['thetvdb']:
+        r2 = requests.get("http://api.tvmaze.com/lookup/shows?thetvdb=%d" % externals['thetvdb'])
+
+        response2 = r2.json() 
+        tvshow_genres_rating_runtime = models.TVShow(genres=response2['genres'],
+                                      rating=response2['rating'],
+                                      runtime=response2['runtime']
+                                      )
+        add_to_db(tvshow_genres_rating_runtime)
+
+        api_show_id = response2['id']
+
+        r3 = requests.get("http://api.tvmaze.com/shows/%d/seasons" % api_show_id)
+
+        seasons = r3.json() 
+        for season in seasons:
+          season_model = models.Season(tvshow_id=tvshow.id,
+                                        season_number=season['id'],
+                                        total_episodes=season['episodeOrder'],
+                                        premiere_date=season['premiereDate'],
+                                        end_date=season['endDate'],
+                                        season_photo=season['image'])
+
+        add_to_db(season_model)
+
+        r4 = requests.get("http://api.tvmaze.com/shows/%d/episodes" % api_show_id)
+        
+        episodes = r4.json()
+
+        for episode in episodes:
+          episode_images = episode['image']
+          episode_model = models.Episode(tvshow_id=tvshow.id,
+                                         episode_name=episode['name'],
+                                         season_number=episode['season'],
+                                         episode_number=episode['number'],
+                                         airdate=episode['airdate'],
+                                         airtime=episode['airtime'],
+                                         airstamp=episode['airstamp'],
+                                         runtime=episode['runtime'],
+                                         image=episode_images['original'],
+                                         summary=episode['summary'])
+        
+        add_to_db(episode_model)
+
+        r5 = requests.get("http://api.tvmaze.com/shows/%d/cast" % api_show_id)
+
+        all_cast_info = r5.json()
+
+        actor_list = []
+        character_list = []
+
+        for cast_info in all_cast_info:
+          
+          actor_info = cast_info['person']
+          for detail in actor_info:
+            actor_list.append(detail['name'])
+
+          character_info = cast_info['character']
+          for detail in character_info:
+            character_list.append(['name'])
+
+        tvshow_actors = models.TVShow(cast=actor_list,
+                                      characters=character_list)
+        add_to_db(tvshow_actors)
+
+      elif externals['tvrage']:
+        r2 = requests.get("http://api.tvmaze.com/lookup/shows?tvrage=%d" % externals['tvrage'])
+
+        response2 = r2.json() 
+        tvshow_genres_rating_runtime = models.TVShow(genres=response2['genres'],
+                                      rating=response2['rating'],
+                                      runtime=response2['runtime']
+                                      )
+        add_to_db(tvshow_genres_rating_runtime)
+
+        api_show_id = response2['id']
+
+        r3 = requests.get("http://api.tvmaze.com/shows/%d/seasons" % api_show_id)
+
+        seasons = r3.json() 
+        for season in seasons:
+          season_model = models.Season(tvshow_id=tvshow.id,
+                                      season_number=season['id'],
+                                      total_episodes=season['episodeOrder'],
+                                      premiere_date=season['premiereDate'],
+                                      end_date=season['endDate'],
+                                      season_photo=season['image'])
+
+        add_to_db(season_model)
+
+        r4 = requests.get("http://api.tvmaze.com/shows/%d/episodes" % api_show_id)
+        
+        episodes = r4.json()
+
+        for episode in episodes:
+          episode_images = episode['image']
+          episode_model = models.Episode(tvshow_id=tvshow.id,
+                                        episode_name=episode['name'],
+                                         season_number=episode['season'],
+                                         episode_number=episode['number'],
+                                         airdate=episode['airdate'],
+                                         airtime=episode['airtime'],
+                                         airstamp=episode['airstamp'],
+                                         runtime=episode['runtime'],
+                                         image=episode_images['original'],
+                                         summary=episode['summary'])
+        
+        add_to_db(episode_model)
+
+        r5 = requests.get("http://api.tvmaze.com/shows/%d/cast" % api_show_id)
+
+        all_cast_info = r5.json()
+
+        actor_list = []
+        character_list = []
+
+        for cast_info in all_cast_info:
+          
+          actor_info = cast_info['person']
+          for detail in actor_info:
+            actor_list.append(detail['name'])
+
+          character_info = cast_info['character']
+          for detail in character_info:
+            character_list.append(['name'])
+
+        tvshow_actors = models.TVShow(cast=actor_list,
+                                      characters=character_list)
+        add_to_db(tvshow_actors)
+
+      else:
+        pass
+     
       
 
 def schedule_days(days):
