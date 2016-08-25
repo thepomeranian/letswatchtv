@@ -5,8 +5,13 @@
 <div class="container">
   <h1>TVShows</h1>
   <ul>
-    {% for tvshow in tvshows %}
+    
+   
+    {% for photo in tvshow_photo %}
+     <img src="{{ photo.medium_url }}">
+    {% endfor %}
 
+    {% for tvshow in tvshows %}
     <li><a href="tvshows/{{ tvshow.id }}">{{ tvshow.tvshow }}</a></li>
 
     {% endfor %}

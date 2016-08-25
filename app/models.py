@@ -70,20 +70,19 @@ class TVShow(db.Model):
   language       = db.Column(db.String(300))
   genres         = db.Column(db.String(500))
   status         = db.Column(db.String(300))
-  runtime        = db.Integer
+  runtime        = db.Column(db.Integer)
   premiered      = db.Column(db.String(300))
   schedule_time  = db.Column(db.String(100))
   schedule_day   = db.Column(db.String(200))
-  rating         = db.Integer
   twitter_handle = db.Column(db.String(150))
   network_id     = db.Column(db.Integer, db.ForeignKey('networks.id'))
   summary        = db.Column(db.String(10000))
-  cast           = db.Column(db.String(5000))
-  characters     = db.Column(db.String(5000))
+  cast           = db.Column(db.String(100000))
+  characters     = db.Column(db.String(100000))
   
   tvshow_photos  = db.relationship('TVShowPhoto', backref='tvshow_photos', lazy='dynamic')
   seasons        = db.relationship('Season', backref='seasons', lazy='dynamic')
-  episodes        = db.relationship('Episode', backref='episodes', lazy='dynamic')
+  episodes       = db.relationship('Episode', backref='episodes', lazy='dynamic')
   externals      = db.relationship('External', backref='externals', lazy='dynamic')
   tweets         = db.relationship('Tweets', backref='tweets', lazy='dynamic')
 
@@ -103,11 +102,18 @@ class Actors(db.Model):
   image         = db.Column(db.String(1000))
 
 
+
+class Genre(object):
+  """The Genre model"""
+  __tablename__ = 'genres'
+  id            = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    
+    
 class Season(db.Model):
   """The Season model"""
   __tablename__  = 'seasons'
   id             = db.Column(db.Integer, autoincrement=True, primary_key=True)
-  tvshow_id     = db.Column(db.Integer, db.ForeignKey('tvshows.id'))
+  tvshow_id      = db.Column(db.Integer, db.ForeignKey('tvshows.id'))
   season_number  = db.Column(db.Integer)
   total_episodes = db.Column(db.Integer)
   premiere_date  = db.Column(db.String(15))
@@ -119,7 +125,7 @@ class Episode(db.Model):
   """The Episode model"""
   __tablename__  = 'episodes'
   id             = db.Column(db.Integer, autoincrement=True, primary_key=True)
-  tvshow_id     = db.Column(db.Integer, db.ForeignKey('tvshows.id'))
+  tvshow_id      = db.Column(db.Integer, db.ForeignKey('tvshows.id'))
   episode_name   = db.Column(db.String(500))
   season_number  = db.Column(db.Integer)
   episode_number = db.Column(db.Integer)

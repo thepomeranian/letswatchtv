@@ -17,19 +17,23 @@ def home():
 @app.route('/tvshows')
 def tvshows():
   """Returns a result page from search query"""
-  tvshows = TVShow.query.all()
+  tvshows      = TVShow.query.all()
+  tvshow_photo = TVShowPhoto.query.all()
   return render_template("tvshows/tvshows.html", 
                           title="Results", 
-                          tvshows=tvshows)
+                          tvshows=tvshows,
+                          tvshow_photo=tvshow_photo)
 
 @app.route('/tvshows/<tvshow_id>')
 def tvshow_details(tvshow_id):
   """Returns details about a particular tvshow and tweets about the show this week"""
   hide           = True
   tvshow_details = TVShow.query.filter_by(id=tvshow_id).one()
-  network        = Network.query.filter_by(id=tvshow_details.network_id).one()
-  print network.network_name
-
+  
+  network      = Network.query.filter_by(id=tvshow_details.network_id).one()
+  seasons      = Season.query.filter_by(tvshow_id = tvshow_id).all()
+  episodes     = Episode.query.filter_by(tvshow_id = tvshow_id).all()
+  tvshow_photo = TVShowPhoto.query.filter_by(tvshow_id = tvshow_id).one()
   if not tvshow_details.twitter_handle:
     hide = False
   return render_template("tvshows/tvshow_details.html", 
@@ -37,7 +41,37 @@ def tvshow_details(tvshow_id):
                           tvshow_name=tvshow_id,
                           network=network.network_name,
                           hide=hide,
+                          seasons=seasons,
+                          episodes=episodes,
+                          tvshow_photo=tvshow_photo,
                           tvshow_details=tvshow_details)
+
+
+@app.route('/tvshows/<tvshow_id>/seasons')
+def season(tvshow_id):
+  tvshow_details = TVShow.query.filter_by(id=tvshow_id).one()
+  seasons        = Season.query.filter_by(tvshow_id = tvshow_id).all()
+  return render_template("tvshows/seasons.html",
+                          title=tvshow_details.tvshow, 
+                          seasons=seasons)
+
+
+@app.route('/tvshows/<tvshow_id>/<season_number>/episodes')
+def episode(tvshow_id,season_number):
+  tvshow_details = TVShow.query.filter_by(id=tvshow_id).one()
+  episodes       = Episode.query.filter_by(tvshow_id = tvshow_id, season_number = season_number).all()
+  return render_template("tvshows/episodes.html",
+                          title=tvshow_details.tvshow, 
+                          episodes=episodes)
+
+
+@app.route('/tvshows/<tvshow_id>/<season_number>/<episode_number>')
+def episode_details(tvshow_id,season_number,episode_number):
+  tvshow_details = TVShow.query.filter_by(id=tvshow_id).one()
+  episode        = Episode.query.filter_by(tvshow_id = tvshow_id, season_number = season_number, episode_number = episode_number).one()
+  return render_template("tvshows/episode_details.html",
+                          title=tvshow_details.tvshow, 
+                          episode=episode)
 
 
 @app.route('/about')
@@ -65,7 +99,7 @@ def register():
 
   form = SignUpForm(request.form)
   if form.validate_on_submit():
-    user = User()
+    user            = User()
     form.populate_obj(user)
     user.created_on = datetime.datetime.now()
     user.updated_on = datetime.datetime.now()
@@ -92,7 +126,7 @@ def login():
     user = User.query.filter_by(email = form.email.data).first()
 
     if user is not None and user.valid_password(form.password.data):
-      if login_user(user, remember = form.remember_me.data):
+      if login_user(user,remember=form.remember_me.data):
         session.permanent            = not form.remember_me.data
         user.created_on              = datetime.datetime.now()
         user.last_logged_in          = datetime.datetime.now()
