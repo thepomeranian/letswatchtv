@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+   <h1>Seasons</h1>
+   <ul>{% for season in seasons %}
+        <li>{{ season.season_number }}</li>
+      {% endfor %}
+  </ul>
+</div>
+
+{% endblock %}

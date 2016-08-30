@@ -5,24 +5,27 @@ from models import *
 from config import *
 from forms import *
 import datetime
+import json
 
 
 @app.route('/')
 def home():
   """Returns homepage of Let's Watch TV"""
+  tvshows      = TVShow.query.filter(TVShow.genres.any(name="Thriller")).all()
   return render_template("index.html", 
-                          title="Home")
+                          title="Home",
+                          tvshows=tvshows)
 
 
 @app.route('/tvshows')
 def tvshows():
   """Returns a result page from search query"""
   tvshows      = TVShow.query.all()
-  tvshow_photo = TVShowPhoto.query.all()
+
   return render_template("tvshows/tvshows.html", 
                           title="Results", 
-                          tvshows=tvshows,
-                          tvshow_photo=tvshow_photo)
+                          tvshows=tvshows[:5])
+
 
 @app.route('/tvshows/<tvshow_id>')
 def tvshow_details(tvshow_id):
@@ -144,6 +147,24 @@ def login():
   return render_template('account/login.html', 
                           title='Login', 
                           form=form)
+
+@app.route('/api/tvshows.json')
+def tvshows_json():
+  """Returns all tvshows in db as json """
+  tvshows = TVShow.query.all()
+  output = []
+  for show in tvshows:
+    genres = []
+    for genre in show.genres:
+      genres.append(genre.name)
+
+    output.append({
+      "id": show.id,
+      "tvshow": show.tvshow,
+      "genres": genres
+      })
+
+  return json.dumps(output)
 
 
 @app.route('/logout/')

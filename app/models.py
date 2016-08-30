@@ -59,6 +59,17 @@ class User(db.Model):
   def get_name(self):
     return self.first_name + " " + self.last_name
 
+genre_association_table=db.Table('genre_association_table', 
+  db.Column('tvshow_id', db.Integer, db.ForeignKey('tvshows.id')),
+  db.Column('genre_id', db.Integer, db.ForeignKey('genres.id'))
+  )
+
+
+actor_association_table=db.Table('actor_association_table', 
+  db.Column('tvshow_id', db.Integer, db.ForeignKey('tvshows.id')),
+  db.Column('actor_id', db.Integer, db.ForeignKey('actors.id'))
+  )
+
 
 class TVShow(db.Model):
   """The TVShow model"""
@@ -68,7 +79,6 @@ class TVShow(db.Model):
   tvshow         = db.Column(db.String(300))
   type_          = db.Column(db.String(300))
   language       = db.Column(db.String(300))
-  genres         = db.Column(db.String(500))
   status         = db.Column(db.String(300))
   runtime        = db.Column(db.Integer)
   premiered      = db.Column(db.String(300))
@@ -77,24 +87,24 @@ class TVShow(db.Model):
   twitter_handle = db.Column(db.String(150))
   network_id     = db.Column(db.Integer, db.ForeignKey('networks.id'))
   summary        = db.Column(db.String(10000))
-  cast           = db.Column(db.String(100000))
   characters     = db.Column(db.String(100000))
   
-  tvshow_photos  = db.relationship('TVShowPhoto', backref='tvshow_photos', lazy='dynamic')
+  tvshow_photos  = db.relationship('TVShowPhoto', backref='tvshow_photo', lazy="dynamic")
   seasons        = db.relationship('Season', backref='seasons', lazy='dynamic')
   episodes       = db.relationship('Episode', backref='episodes', lazy='dynamic')
   externals      = db.relationship('External', backref='externals', lazy='dynamic')
   tweets         = db.relationship('Tweets', backref='tweets', lazy='dynamic')
-
+  genres         = db.relationship('Genre', secondary=genre_association_table, backref='genres', lazy="dynamic")
+  cast           = db.relationship('Actor', secondary=actor_association_table, backref='cast', lazy="dynamic")
   
-class Actors(db.Model):
-  """The Actors model"""
+  
+class Actor(db.Model):
+  """The Actor model"""
 
   __tablename__ = 'actors'
   id            = db.Column(db.Integer, autoincrement=True, primary_key=True)
-  first_name    = db.Column(db.String(100), nullable=False)
-  last_name     = db.Column(db.String(150), nullable=False)
-  gender        = db.Column(db.String(10), nullable=False)
+  name          = db.Column(db.String(1000), nullable=False)
+  gender        = db.Column(db.String(10))
   date_of_birth = db.Column(db.String(100))
   imdb_url      = db.Column(db.String(1000))
   horoscope     = db.Column(db.String(50))
@@ -102,13 +112,15 @@ class Actors(db.Model):
   image         = db.Column(db.String(1000))
 
 
-
-class Genre(object):
+class Genre(db.Model):
   """The Genre model"""
   __tablename__ = 'genres'
   id            = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    
-    
+  name = db.Column(db.String(500))
+
+
+
+
 class Season(db.Model):
   """The Season model"""
   __tablename__  = 'seasons'
@@ -116,9 +128,9 @@ class Season(db.Model):
   tvshow_id      = db.Column(db.Integer, db.ForeignKey('tvshows.id'))
   season_number  = db.Column(db.Integer)
   total_episodes = db.Column(db.Integer)
-  premiere_date  = db.Column(db.String(15))
-  end_date       = db.Column(db.String(15))
-  season_photo   = db.Column(db.String(1000))
+  premiere_date  = db.Column(db.String(30))
+  end_date       = db.Column(db.String(30))
+  season_photo   = db.Column(db.String(2000))
 
 
 class Episode(db.Model):
@@ -126,14 +138,14 @@ class Episode(db.Model):
   __tablename__  = 'episodes'
   id             = db.Column(db.Integer, autoincrement=True, primary_key=True)
   tvshow_id      = db.Column(db.Integer, db.ForeignKey('tvshows.id'))
-  episode_name   = db.Column(db.String(500))
+  episode_name   = db.Column(db.String(2000))
   season_number  = db.Column(db.Integer)
   episode_number = db.Column(db.Integer)
-  airdate        = db.Column(db.String(15))
-  airtime        = db.Column(db.String(15))
+  airdate        = db.Column(db.String(30))
+  airtime        = db.Column(db.String(30))
   airstamp       = db.DateTime
   runtime        = db.Column(db.Integer)
-  image          = db.Column(db.String(1000))
+  image          = db.Column(db.String(2000))
   summary        = db.Column(db.String(10000))
 
 
@@ -143,8 +155,8 @@ class TVShowPhoto(db.Model):
   __tablename__ = "tvshow_photos"
   id            = db.Column(db.Integer, autoincrement=True, primary_key=True)
   tvshow_id     = db.Column(db.Integer, db.ForeignKey('tvshows.id'))
-  medium_url    = db.Column(db.String(1000))
-  original_url  = db.Column(db.String(1000))
+  medium_url    = db.Column(db.String(2000))
+  original_url  = db.Column(db.String(2000))
 
 
 class Network(db.Model):
@@ -152,10 +164,10 @@ class Network(db.Model):
 
   __tablename__ = 'networks'
   id            = db.Column(db.Integer, autoincrement=True, primary_key=True)
-  network_name  = db.Column(db.String(100))
-  country       = db.Column(db.String(150))
+  network_name  = db.Column(db.String(300))
+  country       = db.Column(db.String(300))
   code          = db.Column(db.String(5))
-  timezone      = db.Column(db.String(200))
+  timezone      = db.Column(db.String(300))
   
   tvshows       = db.relationship('TVShow', backref='tvshows', lazy='dynamic')
 
@@ -179,6 +191,6 @@ class Tweets(db.Model):
   username      = db.Column(db.String(100))
   location      = db.Column(db.String(100))
   created_at    = db.Column(db.DateTime)
-  text          = db.Column(db.String(512))
+  text          = db.Column(db.String(2000))
   tvshow_id     = db.Column(db.Integer, db.ForeignKey('tvshows.id'))
 

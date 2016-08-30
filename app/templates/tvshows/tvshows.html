@@ -5,16 +5,16 @@
 <div class="container">
   <h1>TVShows</h1>
   <ul>
-    
+  {% for tvshow in tvshows %}
+        <a href="tvshows/{{ tvshow.id }}">
+          {% for pic in tvshow.tvshow_photos %}
+            <img src="{{pic.medium_url}}" onload="lzld(this)">
+          {% endfor %}
+
+        </a>
+  {% endfor %}
    
-    {% for photo in tvshow_photo %}
-     <img src="{{ photo.medium_url }}">
-    {% endfor %}
 
-    {% for tvshow in tvshows %}
-    <li><a href="tvshows/{{ tvshow.id }}">{{ tvshow.tvshow }}</a></li>
-
-    {% endfor %}
   </ul>
 </div>
 

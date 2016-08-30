@@ -31,13 +31,7 @@ def seed():
       days          = schedule['days']
       string_days   = schedule_days(days)
       externals     = tvshow_obj['externals']
-      string_genres = ""
-
-      if tvshow_obj['genres']:
-        string_genres = stringing_genres(tvshow_obj['genres'])
-
-      else:
-        tvshow_obj['genres'] = None
+      # string_genres = ""
 
       if tvshow_obj['network']:
         network_info = tvshow_obj['network']
@@ -61,6 +55,18 @@ def seed():
 
       print tvshow_obj['name']
       
+      if tvshow_obj['genres']:
+        
+        for genre in tvshow_obj['genres']:
+          genre = get_or_create(db.session, models.Genre,
+                                name=genre)
+
+          tvshow.genres.append(genre)
+          db.session.commit()
+          
+      else:
+        tvshow_obj['genres'] = None
+
       if tvshow_obj['image']:
         image_urls = tvshow_obj['image']
         tvshow_photos = models.TVShowPhoto(tvshow_id=tvshow.id,
@@ -88,7 +94,7 @@ def seed():
         response2 = r2.json() 
 
         tv_result           = models.TVShow.query.filter_by(id=tvshow.id).one()
-        tv_result.genres      = response2['genres']
+        # tv_result.genres      = response2['genres']
         tv_result.runtime = response2['runtime']
         db.session.commit()
 
@@ -143,21 +149,27 @@ def seed():
 
         all_cast_info = r5.json()
 
-        actor_list = []
+        # actor_list = []
         character_list = []
 
         for cast_info in all_cast_info:
           
           actor_info = cast_info['person']
-          name = actor_info['name']
-          actor_list.append(name)
+          actor_name = actor_info['name']
+          # actor_list.append(name)
+        
+          actor_name = get_or_create(db.session, models.Actor,
+                                name=actor_name)
+
+          tvshow.cast.append(actor_name)
+          db.session.commit()
 
           character_info = cast_info['character']
           name = character_info['name']
           character_list.append(name)
 
         tv_result           = models.TVShow.query.filter_by(id=tvshow.id).one()
-        tv_result.cast      = actor_list
+        # tv_result.cast      = actor_list
         tv_result.characters = character_list
         db.session.commit()
 
@@ -166,7 +178,7 @@ def seed():
 
         response2 = r2.json() 
         tv_result           = models.TVShow.query.filter_by(id=tvshow.id).one()
-        tv_result.genres      = response2['genres']
+        # tv_result.genres      = response2['genres']
         tv_result.runtime = response2['runtime']
         db.session.commit()
 
@@ -246,7 +258,7 @@ def seed():
 
         response2 = r2.json() 
         tv_result         = models.TVShow.query.filter_by(id=tvshow.id).one()
-        tv_result.genres  = response2['genres']
+        # tv_result.genres  = response2['genres']
         tv_result.runtime = response2['runtime']
         db.session.commit()
 
