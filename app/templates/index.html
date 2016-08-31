@@ -7,8 +7,13 @@
   <div class="container">
     <h1>Homepage</h1>
     
+    <h2>Currently Showing: Thrillers</h2>
     {% for tvshow in tvshows %}
-      {{tvshow.tvshow}}
+      {#tvshow.tvshow#}
+      {% for photo in tvshow.tvshow_photos%}
+      <img src="{{photo.medium_url}}">
+      {% endfor%}
+      
     {% endfor %}
 
   </div>

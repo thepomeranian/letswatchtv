@@ -11,7 +11,7 @@ import json
 @app.route('/')
 def home():
   """Returns homepage of Let's Watch TV"""
-  tvshows      = TVShow.query.filter(TVShow.genres.any(name="Thriller")).all()
+  tvshows      = TVShow.query.filter(TVShow.genres.any(name="Thriller")).filter_by(status="Running").all()
   return render_template("index.html", 
                           title="Home",
                           tvshows=tvshows)

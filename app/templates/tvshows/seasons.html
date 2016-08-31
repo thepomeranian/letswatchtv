@@ -12,7 +12,7 @@
           <h2>Sorry! No season photo available.</h2>
         {% endif %}
         <li>Season Number: {{ season.season_number }}</li>
-        <li>Total Episodes: {{season.total_episodes}}</li>
+        <li><a href="/tvshows/{{season.tvshow_id}}/{{season.season_number}}/episodes">Total Episodes: {{season.total_episodes}}</a></li>
         <li>Season Premiere Date: {{season.premiere_date}}</li>
         <li>Season End Date: {{season.end_date}}</li>
       {% endfor %}
