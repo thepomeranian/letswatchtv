@@ -161,6 +161,17 @@ def tvshows_json():
     output.append({
       "id": show.id,
       "tvshow": show.tvshow,
+      "show": show.type_,
+      "language": show.language,
+      "status": show.status,
+      "runtime": show.runtime,
+      "premiered": show.premiered,
+      "scheduled_time": show.schedule_time,
+      "scheduled_day": show.schedule_day,
+      "twitter": show.twitter_handle,
+      "network": show.network_id,
+      "summary": show.summary,
+      "characters": show.characters,
       "genres": genres
       })
 

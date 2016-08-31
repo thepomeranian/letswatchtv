@@ -23,20 +23,30 @@
     <li>Twitter Handle: {{ tvshow_details.twitter_handle }}</li>
     <li>Network Information: {{ network }}</li>
     <li>Summary: {{ tvshow_details.summary|safe }}</li>
-
+    <li>Characters: {{tvshow_details.characters}}</li>
+    <li>Cast: 
+    {% for cast_members in tvshow_details.cast %}
+      {{ cast_members.name }}
+    {% endfor %}
+    </li>
   </ul>
 
   <h1>Seasons</h1>
-   <ul>{% for season in seasons %}
-        <li><a href="/tvshows/{{season.tvshow_id}}/seasons">{{ season.season_number }}</a></li>
+   {% for season in seasons %}
+        <a href="/tvshows/{{season.tvshow_id}}/seasons"><img src="{{season.season_photo}}"></a>
+        <a href="/tvshows/{{season.tvshow_id}}/seasons">Season {{ season.season_number }}</a>
       {% endfor %}
-  </ul>
+  
 
   <h1>Episodes</h1>
-  <ul>{% for episode in episodes %}
-        <li><a href="/tvshows/{{episode.tvshow_id}}/{{episode.season_number}}/{{episode.episode_number}}">{{ episode.episode_name }}</a></li>
-      {% endfor %}
-  </ul>
+  {% for episode in episodes %}
+  <div>
+  
+        <a href="/tvshows/{{episode.tvshow_id}}/{{episode.season_number}}/{{episode.episode_number}}"><img src="{{episode.image}}"></a>
+        <a href="/tvshows/{{episode.tvshow_id}}/{{episode.season_number}}/{{episode.episode_number}}">{{ episode.episode_name }}</a>
+
+  </div>
+  {% endfor %}
   
   <!-- scrollable photos of tvshows -->
   <!-- actors -->

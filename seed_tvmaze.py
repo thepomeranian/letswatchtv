@@ -252,7 +252,7 @@ def seed():
           actor_name = get_or_create(db.session, models.Actor,
                                 name=actor_names)
 
-          tvshow.cast.append(actor_name)
+          tvshow.cast.append(actor_names)
           db.session.commit()
 
           character_info = cast_info['character']
@@ -333,9 +333,9 @@ def seed():
           # actor_list.append(name)
         
           actor_name = get_or_create(db.session, models.Actor,
-                                name=actor_name)
+                                name=actor_names)
 
-          tvshow.cast.append(actor_name)
+          tvshow.cast.append(actor_names)
           db.session.commit()
 
           character_info = cast_info['character']
