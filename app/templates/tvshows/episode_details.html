@@ -4,7 +4,16 @@
 
 <div class="container">
  <h1>{{ episode.episode_name }}</h1>
-  
+ <img src="{{ episode.image }}">
+ <ul>
+
+   <li>Season: {{episode.season_number}}</li>
+   <li>Episode: {{episode.episode_number}}</li>
+   <li>Airdate: {{episode.airdate}}</li>
+   <li>Airtime: {{episode.airtime}}</li>
+   
+ </ul>
+  {{episode.summary | safe}}
 </div>
 
 {% endblock %}

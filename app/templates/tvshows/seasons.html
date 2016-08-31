@@ -6,7 +6,15 @@
 
    <h1>Seasons</h1>
    <ul>{% for season in seasons %}
-        <li>{{ season.season_number }}</li>
+        {% if season.season_photo %}
+          <img src="{{season.season_photo}}">
+        {% else %}  
+          <h2>Sorry! No season photo available.</h2>
+        {% endif %}
+        <li>Season Number: {{ season.season_number }}</li>
+        <li>Total Episodes: {{season.total_episodes}}</li>
+        <li>Season Premiere Date: {{season.premiere_date}}</li>
+        <li>Season End Date: {{season.end_date}}</li>
       {% endfor %}
   </ul>
 </div>

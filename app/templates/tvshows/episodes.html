@@ -5,7 +5,11 @@
 <div class="container">
  <h1>Episodes</h1>
   <ul>{% for episode in episodes %}
-        <li>{{ episode.episode_name }}</li>
+        <img src="{{episode.image}}">
+        <li><a href="/tvshows/{{episode.tvshow_id}}/{{episode.season_number}}/{{episode.episode_number}}">{{ episode.episode_name }}</a></li>
+        <li>Airdate: {{episode.airdate}}</li>
+        <li>Runtime: {{episode.airtime}}</li>
+        {{episode.summary | safe}}
       {% endfor %}
   </ul>
 </div>

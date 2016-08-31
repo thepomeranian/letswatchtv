@@ -12,7 +12,11 @@
     
     <li>Type: {{ tvshow_details.type_ }}</li>
     <li>Language: {{ tvshow_details.language }}</li>
-    <li>Genres: {{ tvshow_details.genres }}</li>
+    <li>Genres:
+      {% for genre in tvshow_details.genres %}
+        {{ genre.name }}
+      {% endfor %}
+    </li>
     <li>Status: {{ tvshow_details.status }}</li>
     <li>Original Premiere Date: {{ tvshow_details.premiered }}</li>
     <li>Scheduled: {{ tvshow_details.schedule_day }} at {{ tvshow_details.schedule_time }}</li>
@@ -24,13 +28,13 @@
 
   <h1>Seasons</h1>
    <ul>{% for season in seasons %}
-        <li>{{ season.season_number }}</li>
+        <li><a href="/tvshows/{{season.tvshow_id}}/seasons">{{ season.season_number }}</a></li>
       {% endfor %}
   </ul>
 
   <h1>Episodes</h1>
   <ul>{% for episode in episodes %}
-        <li>{{ episode.episode_name }}</li>
+        <li><a href="/tvshows/{{episode.tvshow_id}}/{{episode.season_number}}/{{episode.episode_number}}">{{ episode.episode_name }}</a></li>
       {% endfor %}
   </ul>
   
@@ -47,7 +51,11 @@
 
   <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
   {% endif %}
-
+  
+  {% for external in tvshow_details.externals%}
+  <a href="http://www.imdb.com/title/{{external.imdb}}/">IMDB</a>
+  <a href="http://thetvdb.com/?tab=series&id={{external.thetvdb}}">theTVDB</a>
+  {% endfor %}
 </div>
 
 {% endblock %}
