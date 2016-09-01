@@ -20,14 +20,16 @@
     <li>Status: {{ tvshow_details.status }}</li>
     <li>Original Premiere Date: {{ tvshow_details.premiered }}</li>
     <li>Scheduled: {{ tvshow_details.schedule_day }} at {{ tvshow_details.schedule_time }}</li>
-    <li>Twitter Handle: 
-  <a href="https://twitter.com/intent/tweet?screen_name={{ tvshow_details.twitter_handle }}" class="twitter-mention-button" data-show-count="false">Tweet to @{{ tvshow_details.twitter_handle }}</a>
+    {% if hide==True %}
+      <li>Twitter Handle: 
+        <a href="https://twitter.com/intent/tweet?screen_name={{ tvshow_details.twitter_handle }}" class="twitter-mention-button" data-show-count="false">Tweet to @{{ tvshow_details.twitter_handle }}</a>
 
-  <a href="https://twitter.com/{{ tvshow_details.twitter_handle }}" class="twitter-follow-button" data-show-count="false">Follow @{{ tvshow_details.twitter_handle }}</a></li>
+        <a href="https://twitter.com/{{ tvshow_details.twitter_handle }}" class="twitter-follow-button" data-show-count="false">Follow @{{ tvshow_details.twitter_handle }}</a></li>
+    {% endif %}
     {% for external in tvshow_details.externals%}
-  <li>IMDB: <a href="http://www.imdb.com/title/{{external.imdb}}/">IMDB</a></li>
-  <li>The TVDB: <a href="http://thetvdb.com/?tab=series&id={{external.thetvdb}}">theTVDB</a></li>
-  {% endfor %}
+      <li>IMDB: <a href="http://www.imdb.com/title/{{external.imdb}}/">IMDB</a></li>
+      <li>The TVDB: <a href="http://thetvdb.com/?tab=series&id={{external.thetvdb}}">theTVDB</a></li>
+    {% endfor %}
     <li>Network Information: {{ network }}</li>
     <li>Summary: {{ tvshow_details.summary|safe }}</li>
     <li>Characters: {{tvshow_details.characters}}</li>

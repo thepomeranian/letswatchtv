@@ -147,6 +147,7 @@ class Episode(db.Model):
   runtime        = db.Column(db.Integer)
   image          = db.Column(db.String(2000))
   summary        = db.Column(db.String(10000))
+  # imdb           = db.Column(db.String(100))
 
 
 class TVShowPhoto(db.Model):

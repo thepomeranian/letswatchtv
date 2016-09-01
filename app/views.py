@@ -23,7 +23,7 @@ def tvshows():
   tvshows      = TVShow.query.all()
 
   return render_template("tvshows/tvshows.html", 
-                          title="Results", 
+                          title="TVShows", 
                           tvshows=tvshows[:8])
 
 
