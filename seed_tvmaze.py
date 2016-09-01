@@ -1,7 +1,6 @@
 import requests
 from app import models, db
 
-
 def get_or_create(session, model, **kwargs):
   """Checks db for same entry, if duplicate entry does not exist, insert a new entry"""
   instance = session.query(model).filter_by(**kwargs).first()
@@ -393,3 +392,4 @@ def stringing_genres(genres):
   return string_genres
 
 seed()
+
