@@ -1,7 +1,0 @@
-{'status': "RT @dmswimmac: If anyone sees @KathleenBaker2 's other ear ring on the bottom of the Olympic pool - pls grab it..@NBCOlympics https://t.co/\xe2\x80\xa6", 'username': 'CatherineNester', 'created_at': datetime.datetime(2016, 8, 9, 22, 13, 21), 'location': u'\xb0o\xb0'}
-{'status': '@NBCOlympics so cute', 'username': 'Hopkin10Kaitlyn', 'created_at': datetime.datetime(2016, 8, 9, 22, 13, 23), 'location': u'Dexter, MO'}
-{'status': 'All the best Dipa . Eager to see your performance on 14th August @IndiainRio2016 @Olympics @Rio2016_en  https://t.co/cKWxHkxUdF', 'username': 'TelanganaDGP', 'created_at': datetime.datetime(2016, 8, 9, 22, 13, 24), 'location': u'Hyderabad, Telangana'}
-{'status': '@edsbs I guess I can not give @NBCOlympics my time tonight now!', 'username': 'CStrable', 'created_at': datetime.datetime(2016, 8, 9, 22, 13, 27), 'location': u'Arizona'}
-{'status': "@NBCOlympics This is 1st time Golf has been in Olympics since 1904! Golf doesn't have a tradition in the Olympics. It's like brand new.", 'username': 'MadAnter', 'created_at': datetime.datetime(2016, 8, 9, 22, 13, 29), 'location': u'Midwest'}
-{'status': 'Whoever is running the @NBCOlympics Twitter feed is hilarious \xf0\x9f\x98\x86 https://t.co/SRh9GYqxKz', 'username': 'myfaulkner', 'created_at': datetime.datetime(2016, 8, 9, 22, 13, 34), 'location': u'Noblesville, IN'}
-{'status': '@astronomolly @NBCOlympics They tend to bring out the worst in people.', 'username': 'DrAndyKass', 'created_at': datetime.datetime(2016, 8, 9, 22, 13, 36), 'location': u'Denver, CO'}

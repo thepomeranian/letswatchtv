@@ -24,7 +24,7 @@ def tvshows():
 
   return render_template("tvshows/tvshows.html", 
                           title="Results", 
-                          tvshows=tvshows[:16])
+                          tvshows=tvshows[:8])
 
 
 @app.route('/tvshows/<tvshow_id>')
