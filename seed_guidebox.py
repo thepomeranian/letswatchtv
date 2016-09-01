@@ -4,7 +4,7 @@ import requests
 
 def seed():
   all_tvshows = models.TVShow.query.all()
-  
+  twitter_id = ""
   for tvshow in all_tvshows:
     print tvshow.tvshow
 
@@ -25,4 +25,7 @@ def seed():
       twitter = social_media['twitter']
       twitter_id = twitter['twitter_id']
       
+  print twitter_id
+
+
 seed()
