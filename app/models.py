@@ -11,6 +11,21 @@ ROLE_ADMIN   = 0
 ROLE_USER    = 1
 ROLE_MANAGER = 2
 
+genre_association_table=db.Table('genre_association_table', 
+  db.Column('tvshow_id', db.Integer, db.ForeignKey('tvshows.id')),
+  db.Column('genre_id', db.Integer, db.ForeignKey('genres.id'))
+  )
+
+
+actor_association_table=db.Table('actor_association_table', 
+  db.Column('tvshow_id', db.Integer, db.ForeignKey('tvshows.id')),
+  db.Column('actor_id', db.Integer, db.ForeignKey('actors.id'))
+  )
+
+user_fav_association_table=db.Table('user_fav_association_table', 
+  db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
+  db.Column('tvshow_id', db.Integer, db.ForeignKey('tvshows.id'))
+  )
 
 class User(db.Model):
   """The User Model"""
@@ -59,16 +74,7 @@ class User(db.Model):
   def get_name(self):
     return self.first_name + " " + self.last_name
 
-genre_association_table=db.Table('genre_association_table', 
-  db.Column('tvshow_id', db.Integer, db.ForeignKey('tvshows.id')),
-  db.Column('genre_id', db.Integer, db.ForeignKey('genres.id'))
-  )
-
-
-actor_association_table=db.Table('actor_association_table', 
-  db.Column('tvshow_id', db.Integer, db.ForeignKey('tvshows.id')),
-  db.Column('actor_id', db.Integer, db.ForeignKey('actors.id'))
-  )
+  user_fav = db.relationship('TVShow', secondary=user_fav_association_table, backref='users')
 
 
 class TVShow(db.Model):
@@ -97,7 +103,7 @@ class TVShow(db.Model):
   genres         = db.relationship('Genre', secondary=genre_association_table, backref='genres', lazy="dynamic")
   cast           = db.relationship('Actor', secondary=actor_association_table, backref='cast', lazy="dynamic")
   
-  
+
 class Actor(db.Model):
   """The Actor model"""
 
@@ -117,8 +123,6 @@ class Genre(db.Model):
   __tablename__ = 'genres'
   id            = db.Column(db.Integer, autoincrement=True, primary_key=True)
   name = db.Column(db.String(500))
-
-
 
 
 class Season(db.Model):

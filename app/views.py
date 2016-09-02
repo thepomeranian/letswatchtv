@@ -6,14 +6,23 @@ from config import *
 from forms import *
 import datetime
 import json
+import random
 
 
 @app.route('/')
 def home():
   """Returns homepage of Let's Watch TV"""
-  tvshows      = TVShow.query.filter(TVShow.genres.any(name="Thriller")).filter_by(status="Running").all()
-  return render_template("index.html", 
+  genres = Genre.query.all()
+  genre_list = []
+
+  for genre in genres:
+    genre_list.append(genre.name)
+
+  random_genre = random.choice(genre_list)
+  tvshows      = TVShow.query.filter(TVShow.genres.any(name=random_genre)).filter_by(status="Running").all()
+  return render_template("index.html",  
                           title="Home",
+                          genre=random_genre,
                           tvshows=tvshows)
 
 
@@ -24,6 +33,7 @@ def tvshows():
 
   return render_template("tvshows/tvshows.html", 
                           title="TVShows", 
+                          genre=random_genre,
                           tvshows=tvshows[:8])
 
 
@@ -87,6 +97,8 @@ def about():
 @app.route('/profile')
 def profile():
   """Returns user's homepage/landing page"""
+
+  # user = User.query.filter_by(email=current_user.email).one()
 
   return render_template("account/profile.html", 
                           title="Home")
