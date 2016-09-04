@@ -27,10 +27,8 @@ def seed():
       resp_count += 1
              
       schedule      = tvshow_obj['schedule']
-      print "added schedule"
       days          = schedule['days']
       string_days   = schedule_days(days)
-      print "added day"
       externals     = tvshow_obj['externals']
       # string_genres = ""
 
@@ -43,7 +41,6 @@ def seed():
                                code=country_info['code'], 
                                timezone=country_info['timezone'])
 
-      print "added network info"
       tvshow = models.TVShow(tvshow=tvshow_obj['name'], 
                              type_=tvshow_obj['type'], 
                              language=tvshow_obj['language'],
@@ -68,7 +65,7 @@ def seed():
           
       else:
         tvshow_obj['genres'] = None
-      print "added genres"
+
       if tvshow_obj['image']:
         image_urls = tvshow_obj['image']
         tvshow_photos = models.TVShowPhoto(tvshow_id=tvshow.id,
@@ -82,23 +79,20 @@ def seed():
                                            medium_url=None,
                                            original_url=None)
         add_to_db(tvshow_photos)
-      print "added images"
+
       external = models.External(tvshow_id=tvshow.id,
                                  tvrage=externals['tvrage'], 
                                  thetvdb=externals['thetvdb'], 
                                  imdb=externals['imdb'])
       add_to_db(external)
-      print "added exeternal id"
 
       if externals['imdb']:
-        print "from imdb"
         
         r2 = requests.get("http://api.tvmaze.com/lookup/shows?imdb=%s" % externals['imdb'])
 
         response2 = r2.json() 
 
         tv_result           = models.TVShow.query.filter_by(id=tvshow.id).one()
-        # tv_result.genres      = response2['genres']
         tv_result.runtime = response2['runtime']
         db.session.commit()
 
@@ -153,14 +147,12 @@ def seed():
 
         all_cast_info = r5.json()
 
-        # actor_list = []
-        character_list = []
+        character_list = ""
 
         for cast_info in all_cast_info:
           
           actor_info = cast_info['person']
           actor_names = actor_info['name']
-          # actor_list.append(name)
         
           actor_name = get_or_create(db.session, models.Actor,
                                 name=actor_names)
@@ -170,10 +162,9 @@ def seed():
 
           character_info = cast_info['character']
           name = character_info['name']
-          character_list.append(name)
+          character_list = name + "," + character_list
 
         tv_result           = models.TVShow.query.filter_by(id=tvshow.id).one()
-        # tv_result.cast      = actor_list
         tv_result.characters = character_list
         db.session.commit()
 
@@ -239,14 +230,12 @@ def seed():
 
         all_cast_info = r5.json()
 
-        actor_list = []
-        character_list = []
+        character_list = ""
 
         for cast_info in all_cast_info:
           
           actor_info = cast_info['person']
           actor_names = actor_info['name']
-          # actor_list.append(name)
         
           actor_name = get_or_create(db.session, models.Actor,
                                 name=actor_names)
@@ -256,10 +245,9 @@ def seed():
 
           character_info = cast_info['character']
           name = character_info['name']
-          character_list.append(name)
+          character_list = name + "," + character_list
 
         tv_result           = models.TVShow.query.filter_by(id=tvshow.id).one()
-        tv_result.cast      = actor_list
         tv_result.characters = character_list
         db.session.commit()
 
@@ -322,27 +310,24 @@ def seed():
 
         all_cast_info = r5.json()
 
-        actor_list = []
-        character_list = []
+        character_list = ""
 
         for cast_info in all_cast_info:
           
           actor_info = cast_info['person']
           actor_names = actor_info['name']
-          # actor_list.append(name)
         
           actor_name = get_or_create(db.session, models.Actor,
                                 name=actor_names)
 
-          tvshow.cast.append(actor_names)
+          tvshow.cast.append(actor_name)
           db.session.commit()
 
           character_info = cast_info['character']
           name = character_info['name']
-          character_list.append(name)
+          character_list = name + "," + character_list
 
         tv_result           = models.TVShow.query.filter_by(id=tvshow.id).one()
-        tv_result.cast      = actor_list
         tv_result.characters = character_list
         db.session.commit()
 

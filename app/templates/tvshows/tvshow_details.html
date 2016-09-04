@@ -2,72 +2,89 @@
 
 {% block content %}
 
-<div class="container">
-  <h1>{{ tvshow_details.tvshow }}</h1>
-  
-  
-  <img src="{{ tvshow_photo.medium_url }}">
-  
-  <ul>
-    
-    <li>Type: {{ tvshow_details.type_ }}</li>
-    <li>Language: {{ tvshow_details.language }}</li>
-    <li>Genres:
-      {% for genre in tvshow_details.genres %}
-        {{ genre.name }}
-      {% endfor %}
-    </li>
-    <li>Status: {{ tvshow_details.status }}</li>
-    <li>Original Premiere Date: {{ tvshow_details.premiered }}</li>
-    <li>Scheduled: {{ tvshow_details.schedule_day }} at {{ tvshow_details.schedule_time }}</li>
-    {% if hide==True %}
-      <li>Twitter Handle: 
-        <a href="https://twitter.com/intent/tweet?screen_name={{ tvshow_details.twitter_handle }}" class="twitter-mention-button" data-show-count="false">Tweet to @{{ tvshow_details.twitter_handle }}</a>
+<h1>{{ tvshow_details.tvshow }}</h1>
 
-        <a href="https://twitter.com/{{ tvshow_details.twitter_handle }}" class="twitter-follow-button" data-show-count="false">Follow @{{ tvshow_details.twitter_handle }}</a></li>
-    {% endif %}
-    {% for external in tvshow_details.externals%}
-      <li>IMDB: <a href="http://www.imdb.com/title/{{external.imdb}}/">IMDB</a></li>
-      <li>The TVDB: <a href="http://thetvdb.com/?tab=series&id={{external.thetvdb}}">theTVDB</a></li>
+{% if current_user.is_favorite(tvshow_details) %}
+  <form action="" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <input type="hidden" name="whattodo" value="unfavorite" />
+    <input type="submit" value="Unfavorite">
+  </form>
+{% else %}
+  <form action="" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <input type="hidden" name="whattodo" value="favorite" />
+    <input type="submit" value="Favorite">
+  </form>
+{% endif %}
+
+<img src="{{ tvshow_photo.medium_url }}">
+
+<ul>
+  
+  <li>Type: {{ tvshow_details.type_ }}</li>
+  <li>Language: {{ tvshow_details.language }}</li>
+  <li>Genres:
+    {% for genre in tvshow_details.genres %}
+      {{ genre.name }}
     {% endfor %}
-    <li>Network Information: {{ network }}</li>
-    <li>Summary: {{ tvshow_details.summary|safe }}</li>
-    <li>Characters: {{tvshow_details.characters}}</li>
-    <li>Cast: 
-    {% for cast_members in tvshow_details.cast %}
-      {{ cast_members.name }}
-    {% endfor %}
-    </li>
-  </ul>
-
-  <h1>Seasons</h1>
-   {% for season in seasons %}
-   <div>
-        <a href="/tvshows/{{season.tvshow_id}}/seasons"><img src="{{season.season_photo}}"></a>
-        <a href="/tvshows/{{season.tvshow_id}}/seasons">Season {{ season.season_number }}</a>
-      {% endfor %}
-  </div>
-
-  <h1>Episodes</h1>
-  {% for episode in episodes %}
-  <div>
-  
-        <a href="/tvshows/{{episode.tvshow_id}}/{{episode.season_number}}/{{episode.episode_number}}"><img src="{{episode.image}}"></a>
-        <a href="/tvshows/{{episode.tvshow_id}}/{{episode.season_number}}/{{episode.episode_number}}">{{ episode.episode_name }}</a>
-
-  </div>
-  {% endfor %}
-  
-  <!-- scrollable photos of tvshows -->
-  <!-- actors -->
-
+  </li>
+  <li>Status: {{ tvshow_details.status }}</li>
+  <li>Original Premiere Date: {{ tvshow_details.premiered }}</li>
+  <li>Scheduled: {{ tvshow_details.schedule_day }} at {{ tvshow_details.schedule_time }}</li>
   {% if hide==True %}
-  
-  <a class="twitter-timeline" data-width="400" data-height="500" data-link-color="#2B7BB9" href="https://twitter.com/{{ tvshow_details.twitter_handle }}">Tweets by {{ tvshow_details.tvshow }}</a>
+    <li>Twitter Handle: 
+      <a href="https://twitter.com/intent/tweet?screen_name={{ tvshow_details.twitter_handle }}" class="twitter-mention-button" data-show-count="false">Tweet to @{{ tvshow_details.twitter_handle }}</a>
 
-  <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+      <a href="https://twitter.com/{{ tvshow_details.twitter_handle }}" class="twitter-follow-button" data-show-count="false">Follow @{{ tvshow_details.twitter_handle }}</a></li>
   {% endif %}
-  
+  {% for external in tvshow_details.externals%}
+    <li>IMDB: <a href="http://www.imdb.com/title/{{external.imdb}}/">IMDB</a></li>
+    <li>The TVDB: <a href="http://thetvdb.com/?tab=series&id={{external.thetvdb}}">theTVDB</a></li>
+  {% endfor %}
+  <li>Network Information: {{ network }}</li>
+  <li>Summary: {{ tvshow_details.summary|safe }}</li>
+  <li>Characters: {{tvshow_details.characters}}</li>
+  <li>Cast: 
+  {% for cast_members in tvshow_details.cast %}
+    {{ cast_members.name + "," }}
+  {% endfor %}
+  </li>
+</ul>
+
+<h1>Seasons</h1>
+ {% for season in seasons %}
+ <div>
+      {% if not season.season_photo %}
+         <a href="/tvshows/{{season.tvshow_id}}/seasons">No Image Available</a> 
+      {% else %}
+
+      <a href="/tvshows/{{season.tvshow_id}}/seasons"><img src="{{season.season_photo}}"></a>
+      {% endif %}
+      <a href="/tvshows/{{season.tvshow_id}}/seasons">Season {{ season.season_number }}</a>
+
+
+    {% endfor %}
 </div>
+
+<h1>Episodes</h1>
+{% for episode in episodes %}
+<div>
+
+      <a href="/tvshows/{{episode.tvshow_id}}/{{episode.season_number}}/{{episode.episode_number}}"><img src="{{episode.image}}"></a>
+      <a href="/tvshows/{{episode.tvshow_id}}/{{episode.season_number}}/{{episode.episode_number}}">{{ episode.episode_name }}</a>
+
+</div>
+{% endfor %}
+
+<!-- scrollable photos of tvshows -->
+<!-- actors -->
+
+{% if hide==True %}
+
+<a class="twitter-timeline" data-width="400" data-height="500" data-link-color="#2B7BB9" href="https://twitter.com/{{ tvshow_details.twitter_handle }}">Tweets by {{ tvshow_details.tvshow }}</a>
+
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+{% endif %}
 
 {% endblock %}

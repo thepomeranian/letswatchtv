@@ -19,7 +19,7 @@ def home():
     genre_list.append(genre.name)
 
   random_genre = random.choice(genre_list)
-  tvshows      = TVShow.query.filter(TVShow.genres.any(name=random_genre)).filter_by(status="Running").all()
+  tvshows = TVShow.query.filter(TVShow.genres.any(name=random_genre)).filter_by(status="Running").all()
   return render_template("index.html",  
                           title="Home",
                           genre=random_genre,
@@ -30,25 +30,37 @@ def home():
 def tvshows():
   """Returns a result page from search query"""
   tvshows      = TVShow.query.all()
+  genres = Genre.query.all()
 
   return render_template("tvshows/tvshows.html", 
-                          title="TVShows", 
-                          genre=random_genre,
-                          tvshows=tvshows[:8])
+                          title="TVShows",
+                          genres=genres, 
+                          tvshows=tvshows[:50])
 
 
-@app.route('/tvshows/<tvshow_id>')
+@app.route('/tvshows/<tvshow_id>', methods = ['GET', 'POST'])
 def tvshow_details(tvshow_id):
   """Returns details about a particular tvshow and tweets about the show this week"""
   hide           = True
   tvshow_details = TVShow.query.filter_by(id=tvshow_id).one()
-  
   network      = Network.query.filter_by(id=tvshow_details.network_id).one()
   seasons      = Season.query.filter_by(tvshow_id = tvshow_id).all()
   episodes     = Episode.query.filter_by(tvshow_id = tvshow_id).all()
   tvshow_photo = TVShowPhoto.query.filter_by(tvshow_id = tvshow_id).one()
   if not tvshow_details.twitter_handle:
     hide = False
+
+  if request.method == 'POST':
+    print "yoo"
+    if request.form.get('whattodo') == 'unfavorite':
+      current_user.tv_fav.remove(tvshow_details)
+      db.session.commit()
+      flash("Removed from favorites", 'success')
+    else: 
+      current_user.tv_fav.append(tvshow_details)
+      flash("Added to favorites", 'success')
+      db.session.commit()
+
   return render_template("tvshows/tvshow_details.html", 
                           title=tvshow_details.tvshow, 
                           tvshow_name=tvshow_id,
@@ -99,9 +111,12 @@ def profile():
   """Returns user's homepage/landing page"""
 
   # user = User.query.filter_by(email=current_user.email).one()
+  favorites = current_user.tv_fav
+
 
   return render_template("account/profile.html", 
-                          title="Home")
+                          title="Home",
+                          favorites=favorites)
 
 
 @app.route('/register', methods = ['GET', 'POST'])

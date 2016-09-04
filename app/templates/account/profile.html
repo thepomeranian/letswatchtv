@@ -7,14 +7,26 @@
 <div class="container">
   <!-- User Home -->
   <h1>Welcome {{ current_user.get_name() }}</h1>
-
-  <h2>Favorites</h2>
-    <ul>
-      <li></li>
-    </ul>
-  <h2>Watch List</h2>
+  
 
   <h2>Currently Watching</h2>
+  {% for favorite in favorites %}
+      {% for tv_photo in favorite.tvshow_photos%} 
+        {% if favorite.status == "Running" %}
+          <a href="/tvshows/{{favorite.id}}"><img src="{{tv_photo.medium_url}}"></a>
+        {% endif %}
+      {% endfor %}   
+  {% endfor %}
+
+
+  <h2>Favorites</h2>
+    {% for favorite in favorites %}
+      {% for tv_photo in favorite.tvshow_photos%} 
+        <a href="/tvshows/{{favorite.id}}"><img src="{{tv_photo.medium_url}}"></a>
+      {% endfor %}   
+    {% endfor %}
+
+  <h2>Watch List</h2>
 
 
 </div>

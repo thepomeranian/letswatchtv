@@ -16,15 +16,19 @@ genre_association_table=db.Table('genre_association_table',
   db.Column('genre_id', db.Integer, db.ForeignKey('genres.id'))
   )
 
-
 actor_association_table=db.Table('actor_association_table', 
   db.Column('tvshow_id', db.Integer, db.ForeignKey('tvshows.id')),
   db.Column('actor_id', db.Integer, db.ForeignKey('actors.id'))
   )
 
-user_fav_association_table=db.Table('user_fav_association_table', 
-  db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
-  db.Column('tvshow_id', db.Integer, db.ForeignKey('tvshows.id'))
+tv_fav_association_table=db.Table('tv_fav_association_table',
+  db.Column('tvshow_id', db.Integer, db.ForeignKey('tvshows.id')),
+  db.Column('user_id', db.Integer, db.ForeignKey('users.id'))
+  )
+
+watchlist_association_table=db.Table('watchlist_association_table',
+  db.Column('tvshow_id', db.Integer, db.ForeignKey('tvshows.id')),
+  db.Column('user_id', db.Integer, db.ForeignKey('users.id'))
   )
 
 class User(db.Model):
@@ -41,6 +45,10 @@ class User(db.Model):
   active         = db.Column(db.SmallInteger, default = 1)
   first_name     = db.Column(db.String(120))
   last_name      = db.Column(db.String(120))
+
+  tv_fav = db.relationship('TVShow', secondary=tv_fav_association_table, backref='user', lazy='dynamic')
+  watchlist = db.relationship('TVShow', secondary=watchlist_association_table, backref='user', lazy='dynamic')
+
 
   def __repr__(self):
     return '<User %r>' % (self.email)
@@ -71,11 +79,27 @@ class User(db.Model):
   def get_id(self):
     return unicode(self.id)
 
+  def favorite_show(self, tvshow):
+    if not self.is_favorite(tvshow):
+      self.tv_fav.append(tvshow)
+      return self
+
+  def unfavorite_show(self, tvshow):
+    if self.is_favorite(tvshow):
+      self.tv_fav.remove(tvshow)
+      return self
+
+  def is_favorite(self, tvshow):
+    return self.tv_fav.filter(tv_fav_association_table.c.tvshow_id == tvshow.id).count() > 0
+
   def get_name(self):
     return self.first_name + " " + self.last_name
 
-  user_fav = db.relationship('TVShow', secondary=user_fav_association_table, backref='users')
+  def watched():
+    pass
 
+  def to_watch():
+    pass
 
 class TVShow(db.Model):
   """The TVShow model"""
@@ -100,10 +124,10 @@ class TVShow(db.Model):
   episodes       = db.relationship('Episode', backref='episodes', lazy='dynamic')
   externals      = db.relationship('External', backref='externals', lazy='dynamic')
   tweets         = db.relationship('Tweets', backref='tweets', lazy='dynamic')
-  genres         = db.relationship('Genre', secondary=genre_association_table, backref='genres', lazy="dynamic")
-  cast           = db.relationship('Actor', secondary=actor_association_table, backref='cast', lazy="dynamic")
-  
-
+  genres         = db.relationship('Genre', secondary=genre_association_table, backref='genres', lazy='dynamic')
+  cast           = db.relationship('Actor', secondary=actor_association_table, backref='cast', lazy='dynamic')
+  # user_fav       = db.relationship('User', secondary=tv_fav_association_table, backref='tvshows', lazy='dynamic')
+    
 class Actor(db.Model):
   """The Actor model"""
 

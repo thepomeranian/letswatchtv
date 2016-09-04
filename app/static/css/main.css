@@ -1,3 +1,1 @@
-h1 {
-  color: red;
-}
+@import 'https://fonts.googleapis.com/css?family=Roboto';h1{color:blue}p{color:pink}body{font-family:'Roboto', sans-serif}

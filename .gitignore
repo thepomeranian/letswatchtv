@@ -3,3 +3,4 @@
 *secret*
 *migrations*
 config.py
+/node_modules

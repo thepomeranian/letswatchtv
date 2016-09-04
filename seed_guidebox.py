@@ -3,7 +3,7 @@ from app import models, db
 import requests
 
 def seed():
-  all_tvshows = models.TVShow.query.all()
+  all_tvshows = models.TVShow.query.filter_by(language="English").all()
   twitter_id = None
   twitter_handle = None
   for tvshow in all_tvshows:
