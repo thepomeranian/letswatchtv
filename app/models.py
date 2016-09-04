@@ -47,7 +47,7 @@ class User(db.Model):
   last_name      = db.Column(db.String(120))
 
   tv_fav = db.relationship('TVShow', secondary=tv_fav_association_table, backref='user', lazy='dynamic')
-  watchlist = db.relationship('TVShow', secondary=watchlist_association_table, backref='user', lazy='dynamic')
+  watchlist = db.relationship('TVShow', secondary=watchlist_association_table, backref='user2', lazy='dynamic')
 
 
   def __repr__(self):
@@ -79,6 +79,9 @@ class User(db.Model):
   def get_id(self):
     return unicode(self.id)
 
+  def get_name(self):
+    return self.first_name + " " + self.last_name  
+
   def favorite_show(self, tvshow):
     if not self.is_favorite(tvshow):
       self.tv_fav.append(tvshow)
@@ -92,14 +95,19 @@ class User(db.Model):
   def is_favorite(self, tvshow):
     return self.tv_fav.filter(tv_fav_association_table.c.tvshow_id == tvshow.id).count() > 0
 
-  def get_name(self):
-    return self.first_name + " " + self.last_name
+  def add_watchlist(self, tvshow):
+    if not self.is_watchlist(tvshow):
+      self.watchlist.append(tvshow)
+      return self
 
-  def watched():
-    pass
+  def remove_watchlist(self, tvshow):
+    if self.is_watchlist(tvshow):
+      self.watchlist.remove(tvshow)
+      return self
 
-  def to_watch():
-    pass
+  def is_watchlist(self, tvshow):
+    return self.watchlist.filter(watchlist_association_table.c.tvshow_id == tvshow.id).count() > 0
+
 
 class TVShow(db.Model):
   """The TVShow model"""

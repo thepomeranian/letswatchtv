@@ -27,7 +27,11 @@
     {% endfor %}
 
   <h2>Watch List</h2>
-
+    {% for tvshow in watchlist %}
+      {% for tv_photo in tvshow.tvshow_photos%} 
+        <a href="/tvshows/{{tvshow.id}}"><img src="{{tv_photo.medium_url}}"></a>
+      {% endfor %}   
+    {% endfor %}
 
 </div>
 

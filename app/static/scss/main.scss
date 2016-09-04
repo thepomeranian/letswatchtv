@@ -1,3 +1,7 @@
+@import "../vendor/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+@import "../vendor/toastr/toastr.scss";
+@import "../vendor/slick-carousel/slick/slick.scss";
+@import "../vendor/slick-carousel/slick/slick-theme.scss";
 @import 'fonts';
 
 h1 {
@@ -10,4 +14,39 @@ p{
 
 body{
   font-family: 'Roboto', sans-serif;
+}
+
+.key-info {
+  padding-top: 60px;
+}
+
+// Change the color of slick arrows
+.slick-prev:before, .slick-next:before{
+    color: #000;
+}
+
+.show-details {
+  padding-bottom: 50px;
+}
+
+.main-info {
+    margin: 0 auto;
+}
+
+.key-title {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 3px 0;
+}
+
+.tvshow-name {
+  display: none;
+}
+
+.tvshow-grid {
+  img {
+    &:hover + .tvshow-name {
+      display: block;
+    }
+  }
 }

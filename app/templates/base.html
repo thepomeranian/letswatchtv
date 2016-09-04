@@ -12,16 +12,14 @@
     <meta name="viewport" content="width=device-width">
 
     {# jQuery #}
-    <script src="{{ url_for('static', filename='js/jquery-3.1.0.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/jquery/dist/jquery.min.js') }}"></script>
 
-    {# Bootstrap css and js #}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    {# Bootstrap js #}
+    <script src="{{ url_for('static', filename='vendor/bootstrap-sass/assets/javascripts/bootstrap.min.js') }}"></script>
 
-    {# Toastr css and js #}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/toastr.min.css') }}">
-    <script src="{{ url_for('static', filename='js/toastr.min.js') }}"></script>
-
+    {# Toastr js #}
+    <script src="{{ url_for('static', filename='vendor/toastr/toastr.min.js') }}"></script>
+  
     {# Lazyloadjs #}
     <script src="{{ url_for('static', filename='js/lazyload.min.js') }}"></script>
 
@@ -29,8 +27,7 @@
     <script src="{{ url_for('static', filename='js/d3.min.js') }}"></script>
     
     {#Slick#}
-    <link rel="stylesheet" type="text/css" href="https://www.jsdelivr.com/projects/jquery.slick"/>
-    <script type="text/javascript" src="https://www.cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+    <script src="{{ url_for('static', filename='vendor/slick-carousel/slick/slick.min.js') }}"></script>
 
     {# Self-made css and js files #}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
@@ -39,7 +36,7 @@
   </head>
   
   <header>
-    <nav class="navbar navbar-inverse">
+    <nav class="navbar">
     <div class="container-fluid">
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">

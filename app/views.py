@@ -35,7 +35,7 @@ def tvshows():
   return render_template("tvshows/tvshows.html", 
                           title="TVShows",
                           genres=genres, 
-                          tvshows=tvshows[:50])
+                          tvshows=tvshows[:5])
 
 
 @app.route('/tvshows/<tvshow_id>', methods = ['GET', 'POST'])
@@ -50,17 +50,6 @@ def tvshow_details(tvshow_id):
   if not tvshow_details.twitter_handle:
     hide = False
 
-  if request.method == 'POST':
-    print "yoo"
-    if request.form.get('whattodo') == 'unfavorite':
-      current_user.tv_fav.remove(tvshow_details)
-      db.session.commit()
-      flash("Removed from favorites", 'success')
-    else: 
-      current_user.tv_fav.append(tvshow_details)
-      flash("Added to favorites", 'success')
-      db.session.commit()
-
   return render_template("tvshows/tvshow_details.html", 
                           title=tvshow_details.tvshow, 
                           tvshow_name=tvshow_id,
@@ -70,6 +59,40 @@ def tvshow_details(tvshow_id):
                           episodes=episodes,
                           tvshow_photo=tvshow_photo,
                           tvshow_details=tvshow_details)
+
+
+@app.route('/tvshows/<tvshow_id>/add_favorite', methods = ['GET', 'POST'])
+def add_favorite(tvshow_id):
+  tvshow = TVShow.query.get(tvshow_id)
+  current_user.favorite_show(tvshow)
+  print "adding favorite"
+  db.session.commit()
+  return redirect(url_for('tvshow_details',tvshow_id=tvshow_id))
+
+
+@app.route('/tvshows/<tvshow_id>/remove_favorite', methods = ['GET', 'POST'])
+def remove_favorite(tvshow_id):
+  tvshow = TVShow.query.get(tvshow_id)
+  current_user.unfavorite_show(tvshow)
+  db.session.commit()
+  return redirect(request.referrer)
+
+
+@app.route('/tvshows/<tvshow_id>/add_watchlist', methods = ['GET', 'POST'])
+def add_watchlist(tvshow_id):
+  tvshow = TVShow.query.get(tvshow_id)
+  current_user.add_watchlist(tvshow)
+  print "adding favorite"
+  db.session.commit()
+  return redirect(url_for('tvshow_details',tvshow_id=tvshow_id))
+
+
+@app.route('/tvshows/<tvshow_id>/remove_watchlist', methods = ['GET', 'POST'])
+def remove_watchlist(tvshow_id):
+  tvshow = TVShow.query.get(tvshow_id)
+  current_user.remove_favorite(tvshow)
+  db.session.commit()
+  return redirect(url_for('tvshow_details',tvshow_id=tvshow_id))
 
 
 @app.route('/tvshows/<tvshow_id>/seasons')

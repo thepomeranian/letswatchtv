@@ -2,89 +2,128 @@
 
 {% block content %}
 
-<h1>{{ tvshow_details.tvshow }}</h1>
-
-{% if current_user.is_favorite(tvshow_details) %}
-  <form action="" method="POST">
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-    <input type="hidden" name="whattodo" value="unfavorite" />
-    <input type="submit" value="Unfavorite">
-  </form>
-{% else %}
-  <form action="" method="POST">
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-    <input type="hidden" name="whattodo" value="favorite" />
-    <input type="submit" value="Favorite">
-  </form>
-{% endif %}
-
-<img src="{{ tvshow_photo.medium_url }}">
-
-<ul>
+<div class="container show-details">
   
-  <li>Type: {{ tvshow_details.type_ }}</li>
-  <li>Language: {{ tvshow_details.language }}</li>
-  <li>Genres:
-    {% for genre in tvshow_details.genres %}
-      {{ genre.name }}
-    {% endfor %}
-  </li>
-  <li>Status: {{ tvshow_details.status }}</li>
-  <li>Original Premiere Date: {{ tvshow_details.premiered }}</li>
-  <li>Scheduled: {{ tvshow_details.schedule_day }} at {{ tvshow_details.schedule_time }}</li>
-  {% if hide==True %}
-    <li>Twitter Handle: 
-      <a href="https://twitter.com/intent/tweet?screen_name={{ tvshow_details.twitter_handle }}" class="twitter-mention-button" data-show-count="false">Tweet to @{{ tvshow_details.twitter_handle }}</a>
-
-      <a href="https://twitter.com/{{ tvshow_details.twitter_handle }}" class="twitter-follow-button" data-show-count="false">Follow @{{ tvshow_details.twitter_handle }}</a></li>
-  {% endif %}
-  {% for external in tvshow_details.externals%}
-    <li>IMDB: <a href="http://www.imdb.com/title/{{external.imdb}}/">IMDB</a></li>
-    <li>The TVDB: <a href="http://thetvdb.com/?tab=series&id={{external.thetvdb}}">theTVDB</a></li>
-  {% endfor %}
-  <li>Network Information: {{ network }}</li>
-  <li>Summary: {{ tvshow_details.summary|safe }}</li>
-  <li>Characters: {{tvshow_details.characters}}</li>
-  <li>Cast: 
-  {% for cast_members in tvshow_details.cast %}
-    {{ cast_members.name + "," }}
-  {% endfor %}
-  </li>
-</ul>
-
-<h1>Seasons</h1>
- {% for season in seasons %}
- <div>
-      {% if not season.season_photo %}
-         <a href="/tvshows/{{season.tvshow_id}}/seasons">No Image Available</a> 
+  <div class="row main-info">
+    
+    <div class="col-md-3">
+      <h1>{{ tvshow_details.tvshow }}</h1>
+      {% if current_user.is_favorite(tvshow_details) %}
+        <a href="/tvshows/{{tvshow_details.id}}/remove_favorite"><button>Unfavorite</button></a>
       {% else %}
-
-      <a href="/tvshows/{{season.tvshow_id}}/seasons"><img src="{{season.season_photo}}"></a>
+        <a href="/tvshows/{{tvshow_details.id}}/add_favorite"><button>Favorite</button></a>
       {% endif %}
-      <a href="/tvshows/{{season.tvshow_id}}/seasons">Season {{ season.season_number }}</a>
 
+      {% if current_user.is_watchlist(tvshow_details) %}
+        <a href="/tvshows/{{tvshow_details.id}}/remove_watchlist"><button>Remove from watchlist</button></a>
+      {% else %}
+        <a href="/tvshows/{{tvshow_details.id}}/add_watchlist"><button>Add to watchlist</button></a>
+      {% endif %}
+            <br>
+            <br>
+      <img src="{{ tvshow_photo.medium_url }}">
+    </div>
 
+    <div class="col-md-9 key-info">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="key-title">Type</div>
+          <div class="key-data">{{ tvshow_details.type_ }}</div>
+          <div class="key-title">Language</div>
+          <div class="key-data">{{ tvshow_details.language }}</div>
+          <div class="key-title">Genres</div>
+          <div class="key-data">
+            {% for genre in tvshow_details.genres %}
+              {{ genre.name }}<br>
+            {% endfor %}
+          </div>
+          <div class="key-title">Status</div>
+          <div class="key-data">{{ tvshow_details.status }}</div>
+          
+          <div class="key-title">Original Premiere Date</div>
+          <div class="key-data">{{ tvshow_details.premiered }}</div>
+          <div class="key-title">Scheduled</div>
+          <div class="key-data">{{ tvshow_details.schedule_day }} at {{ tvshow_details.schedule_time }}</div>
+          {% for external in tvshow_details.externals%}
+            <div class="key-title">IMDB</div>
+            <div class="key-data"><a href="http://www.imdb.com/title/{{external.imdb}}/">IMDB</a></div>
+            <div class="key-title">theTVDB</div>
+            <div class="key-data"><a href="http://thetvdb.com/?tab=series&id={{external.thetvdb}}">theTVDB</a></div>    
+          {% endfor %}
+          
+            <div class="key-title">Network Information</div>
+            <div class="key-data">{{ network }}</div>
+        </div>
+        
+        <div class="col=md-4">
+          <div class="key-title">Twitter Handle</div>
+          <div class="key-data"><a href="https://twitter.com/intent/tweet?screen_name={{ tvshow_details.twitter_handle }}" class="twitter-mention-button" data-show-count="false">Tweet to @{{ tvshow_details.twitter_handle }}</a> <a href="https://twitter.com/{{ tvshow_details.twitter_handle }}" class="twitter-follow-button" data-show-count="false">Follow @{{ tvshow_details.twitter_handle }}</a></li></div>
+            {% if hide==True %}
+  
+            <a class="twitter-timeline" data-width="400" data-height="500" data-link-color="#2B7BB9" href="https://twitter.com/{{ tvshow_details.twitter_handle }}">Tweets by {{ tvshow_details.tvshow }}</a>
+            <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+            {% endif %}
+        </div> <!-- col-md-4 -->
+      </div> <!-- row -->
+    </div> <!-- key-info -->
+  </div> <!-- main-info -->
+  {# Additional details below top box #}
+  <div class="key-title">Summary</div>
+  <div class="key-data">{{ tvshow_details.summary|safe }}</div>
+  <div class="key-title">Characters</div>
+  <div class="key-data">{{tvshow_details.characters}}</div>
+  <div class="key-title">Cast</div>
+  <div class="key-data">
+    {% for cast_members in tvshow_details.cast %}
+      {{ cast_members.name }}
     {% endfor %}
+  </div>
+  <h1>Seasons</h1>
+  <div class="seasons">
+   {% for season in seasons %}
+     <div>
+      {% if not season.season_photo %}
+           <a href="/tvshows/{{season.tvshow_id}}/seasons"><img src="https://placeholdit.imgix.net/~text?txtsize=33&txt=Sorry,%20no%20image%20available&w=210&h=295"></a> 
+        {% else %}
+
+        <a href="/tvshows/{{season.tvshow_id}}/seasons"><img src="{{season.season_photo}}"></a>
+        {% endif %}
+        <a href="/tvshows/{{season.tvshow_id}}/seasons">Season {{ season.season_number }}</a>
+    </div>
+  {% endfor %}
+  </div>
+  <h1>Episodes</h1>
+  <div class="episodes">
+  {% for episode in episodes %}
+  <div>
+    <a href="/tvshows/{{episode.tvshow_id}}/{{episode.season_number}}/{{episode.episode_number}}"><img src="{{episode.image}}"></a>
+    <a href="/tvshows/{{episode.tvshow_id}}/{{episode.season_number}}/{{episode.episode_number}}">{{ episode.episode_name }}</a>
+  </div>
+  {% endfor %}
+  </div>
+  
+  <!-- scrollable photos of tvshows -->
+  
 </div>
 
-<h1>Episodes</h1>
-{% for episode in episodes %}
-<div>
 
-      <a href="/tvshows/{{episode.tvshow_id}}/{{episode.season_number}}/{{episode.episode_number}}"><img src="{{episode.image}}"></a>
-      <a href="/tvshows/{{episode.tvshow_id}}/{{episode.season_number}}/{{episode.episode_number}}">{{ episode.episode_name }}</a>
+{% endblock %}
 
-</div>
-{% endfor %}
 
-<!-- scrollable photos of tvshows -->
-<!-- actors -->
-
-{% if hide==True %}
-
-<a class="twitter-timeline" data-width="400" data-height="500" data-link-color="#2B7BB9" href="https://twitter.com/{{ tvshow_details.twitter_handle }}">Tweets by {{ tvshow_details.tvshow }}</a>
-
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-{% endif %}
-
+<!-- dsfasdfasdfasdfadfsadfasdfasdfasdfasdfasdf -->
+{% block scriptinclude %}
+<script>
+$('.seasons').slick({
+  infinite: true,
+  slidesToShow: 3,
+  slidesToScroll: 3
+});
+</script>
+<script>
+$('.episodes').slick({
+  infinite: true,
+  slidesToShow: 3,
+  slidesToScroll: 3
+});
+</script>
 {% endblock %}
