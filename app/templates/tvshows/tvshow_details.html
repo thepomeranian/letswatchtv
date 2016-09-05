@@ -3,30 +3,32 @@
 {% block content %}
 
 <div class="container show-details">
-  
-  <div class="row main-info">
-    
-    <div class="col-md-3">
-      <h1>{{ tvshow_details.tvshow }}</h1>
-      {% if current_user.is_favorite(tvshow_details) %}
-        <a href="/tvshows/{{tvshow_details.id}}/remove_favorite"><button>Unfavorite</button></a>
-      {% else %}
-        <a href="/tvshows/{{tvshow_details.id}}/add_favorite"><button>Favorite</button></a>
-      {% endif %}
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="title-bar">
+        <h1>{{ tvshow_details.tvshow }}</h1>
+        {% if current_user.is_favorite(tvshow_details) %}
+          <a href="/tvshows/{{tvshow_details.id}}/remove_favorite"><button type="button" class="button-pad btn btn-danger">Unfavorite</button></a>
+        {% else %}
+          <a href="/tvshows/{{tvshow_details.id}}/add_favorite"><button type="button" class="button-pad btn btn-success">Favorite</button></a>
+        {% endif %}
 
-      {% if current_user.is_watchlist(tvshow_details) %}
-        <a href="/tvshows/{{tvshow_details.id}}/remove_watchlist"><button>Remove from watchlist</button></a>
-      {% else %}
-        <a href="/tvshows/{{tvshow_details.id}}/add_watchlist"><button>Add to watchlist</button></a>
-      {% endif %}
-            <br>
-            <br>
-      <img src="{{ tvshow_photo.medium_url }}">
+        {% if current_user.is_watchlist(tvshow_details) %}
+          <a href="/tvshows/{{tvshow_details.id}}/remove_watchlist"><button type="button" class="button-pad btn btn-danger">Remove from watchlist</button></a>
+        {% else %}
+          <a href="/tvshows/{{tvshow_details.id}}/add_watchlist"><button type="button" class="button-pad btn btn-success">Add to watchlist</button></a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="row main-info">
+    <div class="col-md-3 tvshow-image">
+      <img src="{{ tvshow_photo.original_url }}">
     </div>
 
-    <div class="col-md-9 key-info">
+    <div class="col-md-9">
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6 key-info">
           <div class="key-title">Type</div>
           <div class="key-data">{{ tvshow_details.type_ }}</div>
           <div class="key-title">Language</div>
@@ -55,7 +57,7 @@
             <div class="key-data">{{ network }}</div>
         </div>
         
-        <div class="col=md-4">
+        <div class="col-md-6">
           <div class="key-title">Twitter Handle</div>
           <div class="key-data"><a href="https://twitter.com/intent/tweet?screen_name={{ tvshow_details.twitter_handle }}" class="twitter-mention-button" data-show-count="false">Tweet to @{{ tvshow_details.twitter_handle }}</a> <a href="https://twitter.com/{{ tvshow_details.twitter_handle }}" class="twitter-follow-button" data-show-count="false">Follow @{{ tvshow_details.twitter_handle }}</a></li></div>
             {% if hide==True %}

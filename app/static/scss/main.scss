@@ -16,10 +16,6 @@ body{
   font-family: 'Roboto', sans-serif;
 }
 
-.key-info {
-  padding-top: 60px;
-}
-
 // Change the color of slick arrows
 .slick-prev:before, .slick-next:before{
     color: #000;
@@ -49,4 +45,27 @@ body{
       display: block;
     }
   }
+}
+
+.title-bar {
+  width: 100%;
+  display: inline-block;
+  h1 {
+    float: left;
+  }
+}
+
+.key-info {
+  text-align: left;
+}
+
+.tvshow-image {
+  img {
+    max-width: 100%;
+  }
+}
+
+.button-pad {
+  margin-top: 20px;
+  margin-left: 10px;
 }

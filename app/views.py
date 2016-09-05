@@ -35,7 +35,7 @@ def tvshows():
   return render_template("tvshows/tvshows.html", 
                           title="TVShows",
                           genres=genres, 
-                          tvshows=tvshows[:5])
+                          tvshows=tvshows[:15])
 
 
 @app.route('/tvshows/<tvshow_id>', methods = ['GET', 'POST'])
@@ -65,7 +65,7 @@ def tvshow_details(tvshow_id):
 def add_favorite(tvshow_id):
   tvshow = TVShow.query.get(tvshow_id)
   current_user.favorite_show(tvshow)
-  print "adding favorite"
+  flash("Added to favorites", 'success')
   db.session.commit()
   return redirect(url_for('tvshow_details',tvshow_id=tvshow_id))
 
@@ -74,6 +74,7 @@ def add_favorite(tvshow_id):
 def remove_favorite(tvshow_id):
   tvshow = TVShow.query.get(tvshow_id)
   current_user.unfavorite_show(tvshow)
+  flash("Removed from favorites", 'danger')
   db.session.commit()
   return redirect(request.referrer)
 
@@ -82,7 +83,7 @@ def remove_favorite(tvshow_id):
 def add_watchlist(tvshow_id):
   tvshow = TVShow.query.get(tvshow_id)
   current_user.add_watchlist(tvshow)
-  print "adding favorite"
+  flash("Added to watchlist", 'success')
   db.session.commit()
   return redirect(url_for('tvshow_details',tvshow_id=tvshow_id))
 
@@ -90,7 +91,8 @@ def add_watchlist(tvshow_id):
 @app.route('/tvshows/<tvshow_id>/remove_watchlist', methods = ['GET', 'POST'])
 def remove_watchlist(tvshow_id):
   tvshow = TVShow.query.get(tvshow_id)
-  current_user.remove_favorite(tvshow)
+  current_user.remove_watchlist(tvshow)
+  flash("Removed from watchlist", 'danger')
   db.session.commit()
   return redirect(url_for('tvshow_details',tvshow_id=tvshow_id))
 
@@ -135,11 +137,13 @@ def profile():
 
   # user = User.query.filter_by(email=current_user.email).one()
   favorites = current_user.tv_fav
+  watchlist = current_user.watchlist
 
 
   return render_template("account/profile.html", 
                           title="Home",
-                          favorites=favorites)
+                          favorites=favorites,
+                          watchlist=watchlist)
 
 
 @app.route('/register', methods = ['GET', 'POST'])
