@@ -43,6 +43,15 @@ body{
   img {
     &:hover + .tvshow-name {
       display: block;
+      background: rgba(0,0,0,0.5);
+      color: white;
+      cursor: pointer;
+      height: 300px;
+      text-align: center;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 210px;
     }
   }
 }
@@ -69,3 +78,9 @@ body{
   margin-top: 20px;
   margin-left: 10px;
 }
+
+/* fluid 5 columns */
+.grid-sizer,
+.grid-item { width: 20%; }
+/* 2 columns */
+.grid-item--width2 { width: 40%; }

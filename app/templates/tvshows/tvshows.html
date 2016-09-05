@@ -5,10 +5,18 @@
 <div class="container">
   <h1>TVShows</h1>
 
+  <div class="grid">
+  <!-- width of .grid-sizer used for columnWidth -->
+    <div class="grid-sizer"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item grid-item--width2"></div>
+  
+  </div>
+
   <div class="tvshow-grid">
+  <div class="row">
     {% for tvshow in tvshows %}
       <div class="tvshow col-md-3">
-        <div class="row">
           <a href="/tvshows/{{ tvshow.id }}">
           {% for pic in tvshow.tvshow_photos %}
             <img src="{{pic.medium_url}}" onload="lzld(this)" > 
@@ -16,12 +24,27 @@
           <div class="tvshow-name">{{tvshow.tvshow}}</div>
           </a>
       </div>
-    </div>
+      {% if loop.index % 4 == 0 %}
+        </div><div class="row">
+      {% endif %}
     {% endfor %}
+    </div>
+    </div>
 
-  
-  </div>
 </div>
 
 {% endblock %}
 
+{% block scriptinclude %}
+<script>
+  $('.grid').isotope({
+    // set itemSelector so .grid-sizer is not used in layout
+    itemSelector: '.grid-item',
+    percentPosition: true,
+    masonry: {
+      // use element for option
+      columnWidth: '.grid-sizer'
+    }
+  })
+</script>
+{% endblock %}

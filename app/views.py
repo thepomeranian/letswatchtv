@@ -29,8 +29,8 @@ def home():
 @app.route('/tvshows')
 def tvshows():
   """Returns a result page from search query"""
-  tvshows      = TVShow.query.all()
-  genres = Genre.query.all()
+  tvshows = TVShow.query.all()
+  genres  = Genre.query.all()
 
   return render_template("tvshows/tvshows.html", 
                           title="TVShows",
