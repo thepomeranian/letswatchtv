@@ -135,7 +135,14 @@ class TVShow(db.Model):
   genres         = db.relationship('Genre', secondary=genre_association_table, backref='genres', lazy='dynamic')
   cast           = db.relationship('Actor', secondary=actor_association_table, backref='cast', lazy='dynamic')
   # user_fav       = db.relationship('User', secondary=tv_fav_association_table, backref='tvshows', lazy='dynamic')
-    
+  
+  def get_genres(self):
+    string_genre = ""
+    for genre in self.genres:
+      string_genre = string_genre + " " + genre.name
+    return string_genre.lower()
+
+
 class Actor(db.Model):
   """The Actor model"""
 
@@ -153,7 +160,7 @@ class Actor(db.Model):
 class Genre(db.Model):
   """The Genre model"""
   __tablename__ = 'genres'
-  id            = db.Column(db.Integer, autoincrement=True, primary_key=True)
+  id   = db.Column(db.Integer, autoincrement=True, primary_key=True)
   name = db.Column(db.String(500))
 
 

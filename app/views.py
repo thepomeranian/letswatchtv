@@ -31,12 +31,17 @@ def tvshows():
   """Returns a result page from search query"""
   tvshows = TVShow.query.all()
   genres  = Genre.query.all()
-
+  list_genres = genre_list(genres)
   return render_template("tvshows/tvshows.html", 
                           title="TVShows",
-                          genres=genres, 
-                          tvshows=tvshows[:15])
+                          list_genres=list_genres, 
+                          tvshows=tvshows[:100])
 
+def genre_list(genre_list):
+    results = []
+    for genre in genre_list:
+      results.append(genre.name.lower())
+    return results 
 
 @app.route('/tvshows/<tvshow_id>', methods = ['GET', 'POST'])
 def tvshow_details(tvshow_id):

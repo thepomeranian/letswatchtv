@@ -4,31 +4,25 @@
 
 <div class="container">
   <h1>TVShows</h1>
-
-  <div class="grid">
-  <!-- width of .grid-sizer used for columnWidth -->
-    <div class="grid-sizer"></div>
-    <div class="grid-item"></div>
-    <div class="grid-item grid-item--width2"></div>
-  
+  <div class="button-group filter-button-group">
+    <button class="btn btn-info genre-pad" type="button" data-filter="*">Show All</button>
+    {% for genre in list_genres %}
+      <button class="btn btn-info genre-pad" type="button" data-filter=".{{genre}}">{{genre}}</button>
+    {% endfor %}
   </div>
-
-  <div class="tvshow-grid">
-  <div class="row">
+  
+  <div class="tvshow-grid grid">
+    <div class="grid-sizer"></div>
     {% for tvshow in tvshows %}
-      <div class="tvshow col-md-3">
+      <div class="tvshow col-md-3{{ tvshow.get_genres() }} grid-item grid-item--width1">
           <a href="/tvshows/{{ tvshow.id }}">
           {% for pic in tvshow.tvshow_photos %}
             <img src="{{pic.medium_url}}" onload="lzld(this)" > 
           {% endfor %}
-          <div class="tvshow-name">{{tvshow.tvshow}}</div>
+          <!-- <div class="tvshow-name">{#tvshow.tvshow#}</div> -->
           </a>
       </div>
-      {% if loop.index % 4 == 0 %}
-        </div><div class="row">
-      {% endif %}
     {% endfor %}
-    </div>
     </div>
 
 </div>
@@ -37,14 +31,29 @@
 
 {% block scriptinclude %}
 <script>
-  $('.grid').isotope({
-    // set itemSelector so .grid-sizer is not used in layout
-    itemSelector: '.grid-item',
-    percentPosition: true,
-    masonry: {
-      // use element for option
-      columnWidth: '.grid-sizer'
-    }
-  })
+var $container = $('#container');
+
+$(window).load(function(){ 
+
+    var $grid = $('.grid').isotope({
+    // options
+    });
+    // filter items on button click
+    $('.filter-button-group').on( 'click', 'button', function() {
+      var filterValue = $(this).attr('data-filter');
+      $grid.isotope({ filter: filterValue });
+    });
+
+    $('.grid').isotope({
+      // set itemSelector so .grid-sizer is not used in layout
+      itemSelector: '.grid-item',
+      percentPosition: true,
+      masonry: {
+        // use element for option
+        columnWidth: '.grid-sizer'
+      }
+    });
+
+});
 </script>
 {% endblock %}

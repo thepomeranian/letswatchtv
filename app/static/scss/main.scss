@@ -35,27 +35,6 @@ body{
     padding: 3px 0;
 }
 
-.tvshow-name {
-  display: none;
-}
-
-.tvshow-grid {
-  img {
-    &:hover + .tvshow-name {
-      display: block;
-      background: rgba(0,0,0,0.5);
-      color: white;
-      cursor: pointer;
-      height: 300px;
-      text-align: center;
-      left: 0;
-      position: absolute;
-      top: 0;
-      width: 210px;
-    }
-  }
-}
-
 .title-bar {
   width: 100%;
   display: inline-block;
@@ -84,3 +63,20 @@ body{
 .grid-item { width: 20%; }
 /* 2 columns */
 .grid-item--width2 { width: 40%; }
+
+.tvshow {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.genre-pad {
+  margin-bottom: 3px;
+}
+
+img {
+  width: 600px;
+  height: 450px;
+  background: url(loading.gif) 50% no-repeat;
+  border: 1px solid black;
+  border-radius: 5px;
+}
