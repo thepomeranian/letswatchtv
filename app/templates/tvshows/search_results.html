@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+  <h1>Search Results</h1>
+  <strong>You searched for {{ search_term }}</strong>
+  <div class="tvshow-grid grid">
+    <div class="grid-sizer"></div>
+    {% for tvshow in tvshows %}
+      <div class="tvshow col-md-3{{ tvshow.get_genres() }} grid-item grid-item--width1">
+          <a href="/tvshows/{{ tvshow.id }}">
+          {% for pic in tvshow.tvshow_photos %}
+            <img src="{{pic.medium_url}}" onload="lzld(this)" > 
+          {% endfor %}
+          <!-- <div class="tvshow-name">{#tvshow.tvshow#}</div> -->
+          </a>
+      </div>
+    {% endfor %}
+    </div>
+
+
+
+</div>
+
+{% endblock %}
+
+{% block scriptinclude %}
+<script>
+var $container = $('#container');
+
+$(window).load(function(){ 
+
+    var $grid = $('.grid').isotope({
+    // options
+    });
+    // filter items on button click
+    $('.filter-button-group').on( 'click', 'button', function() {
+      var filterValue = $(this).attr('data-filter');
+      $grid.isotope({ filter: filterValue });
+    });
+
+    $('.grid').isotope({
+      // set itemSelector so .grid-sizer is not used in layout
+      itemSelector: '.grid-item',
+      percentPosition: true,
+      masonry: {
+        // use element for option
+        columnWidth: '.grid-sizer'
+      }
+    });
+
+});
+</script>
+{% endblock %}

@@ -26,6 +26,20 @@ def home():
                           tvshows=tvshows)
 
 
+@app.route('/search', methods=['GET','POST'])
+def search():
+  if request.method=='POST':
+    search_term = request.form.get('search_term')
+    tvshows = TVShow.query.filter(TVShow.tvshow.match(search_term)).all()
+    print search_term
+    print tvshows
+    return render_template("tvshows/search_results.html",
+                           title="Search Results",
+                           search_term=search_term,
+                           tvshows=tvshows)
+
+  return redirect(url_for('tvshows'))
+
 @app.route('/tvshows')
 def tvshows():
   """Returns a result page from search query"""
@@ -42,6 +56,7 @@ def genre_list(genre_list):
     for genre in genre_list:
       results.append(genre.name.lower())
     return results 
+
 
 @app.route('/tvshows/<tvshow_id>', methods = ['GET', 'POST'])
 def tvshow_details(tvshow_id):
@@ -116,7 +131,8 @@ def episode(tvshow_id,season_number):
   tvshow_details = TVShow.query.filter_by(id=tvshow_id).one()
   episodes       = Episode.query.filter_by(tvshow_id = tvshow_id, season_number = season_number).all()
   return render_template("tvshows/episodes.html",
-                          title=tvshow_details.tvshow, 
+                          title=tvshow_details.tvshow,
+                          season_number=season_number, 
                           episodes=episodes)
 
 
@@ -126,6 +142,8 @@ def episode_details(tvshow_id,season_number,episode_number):
   episode        = Episode.query.filter_by(tvshow_id = tvshow_id, season_number = season_number, episode_number = episode_number).one()
   return render_template("tvshows/episode_details.html",
                           title=tvshow_details.tvshow, 
+                          season_number=season_number,
+                          episode_number=episode_number,
                           episode=episode)
 
 
