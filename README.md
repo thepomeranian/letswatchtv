@@ -62,7 +62,7 @@ Assuming dependencies are installed and the virtualenv is active:
 The app should be running on [localhost:5000](http://localhost:5000)!
 
 ## Tech Stack
-People sometimes ask me: _thehamster what kinds of frameworks, libraries, and tools did you use to build this site and what do they do?_
+People sometimes ask me: _thepomeranian what kinds of frameworks, libraries, and tools did you use to build this site and what do they do?_
 
 **Python**
 - Flask
