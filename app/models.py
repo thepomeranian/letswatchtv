@@ -2,6 +2,9 @@
 from app import db
 from sqlalchemy import *
 from werkzeug.security import generate_password_hash, check_password_hash
+import random
+import string
+from hashlib import sha512
 
 # If you're looking to change the database, change the properties below
 # and run `python manage.py db migrate` or `python managepy db upgrade`
@@ -10,6 +13,16 @@ from werkzeug.security import generate_password_hash, check_password_hash
 ROLE_ADMIN   = 0
 ROLE_USER    = 1
 ROLE_MANAGER = 2
+
+SIMPLE_CHARS = string.ascii_letters + string.digits
+
+def get_random_string(length=24):
+  return ''.join(random.choice(SIMPLE_CHARS) for i in xrange(length))
+
+def get_random_hash(length=24):
+  hash = sha512()
+  hash.update(get_random_string())
+  return hash.hexdigest()[:length]
 
 genre_association_table=db.Table('genre_association_table', 
   db.Column('tvshow_id', db.Integer, db.ForeignKey('tvshows.id')),

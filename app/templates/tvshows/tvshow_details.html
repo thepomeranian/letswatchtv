@@ -1,133 +1,127 @@
-{% extends "base.html" %}
-
-{% block content %}
-
+{% extends "base.html" %} {% block content %}
 <div class="container show-details">
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="title-bar">
-        <h1>{{ tvshow_details.tvshow }}</h1>
-        {% if current_user.is_authenticated %}
-          {% if current_user.is_favorite(tvshow_details) %}
-            <a href="/tvshows/{{tvshow_details.id}}/remove_favorite"><button type="button" class="button-pad btn btn-danger">Unfavorite</button></a>
-          {% else %}
-            <a href="/tvshows/{{tvshow_details.id}}/add_favorite"><button type="button" class="button-pad btn btn-success">Favorite</button></a>
-          {% endif %}
-
-          {% if current_user.is_watchlist(tvshow_details) %}
-            <a href="/tvshows/{{tvshow_details.id}}/remove_watchlist"><button type="button" class="button-pad btn btn-danger">Remove from watchlist</button></a>
-          {% else %}
-            <a href="/tvshows/{{tvshow_details.id}}/add_watchlist"><button type="button" class="button-pad btn btn-success">Add to watchlist</button></a>
-          {% endif %}
-        {% endif %}
-      </div>
-    </div>
-  </div>
-  <div class="row main-info">
-    <div class="col-md-3 tvshow-image">
-      <img src="{{ tvshow_photo.original_url }}">
-    </div>
-
-    <div class="col-md-9">
-      <div class="row">
-        <div class="col-md-6 key-info">
-          <div class="key-title">Type</div>
-          <div class="key-data">{{ tvshow_details.type_ }}</div>
-          <div class="key-title">Language</div>
-          <div class="key-data">{{ tvshow_details.language }}</div>
-          <div class="key-title">Genres</div>
-          <div class="key-data">
-            {% for genre in tvshow_details.genres %}
-              {{ genre.name }}<br>
-            {% endfor %}
-          </div>
-          <div class="key-title">Status</div>
-          <div class="key-data">{{ tvshow_details.status }}</div>
-          
-          <div class="key-title">Original Premiere Date</div>
-          <div class="key-data">{{ tvshow_details.premiered }}</div>
-          <div class="key-title">Scheduled</div>
-          <div class="key-data">{{ tvshow_details.schedule_day }} at {{ tvshow_details.schedule_time }}</div>
-          {% for external in tvshow_details.externals%}
-            <div class="key-title">IMDB</div>
-            <div class="key-data"><a href="http://www.imdb.com/title/{{external.imdb}}/">IMDB</a></div>
-            <div class="key-title">theTVDB</div>
-            <div class="key-data"><a href="http://thetvdb.com/?tab=series&id={{external.thetvdb}}">theTVDB</a></div>    
-          {% endfor %}
-          
-            <div class="key-title">Network Information</div>
-            <div class="key-data">{{ network }}</div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="title-bar">
+                <h1>{{ tvshow_details.tvshow }}</h1> {% if current_user.is_authenticated %} {% if current_user.is_favorite(tvshow_details) %}
+                <a href="/tvshows/{{tvshow_details.id}}/remove_favorite">
+                    <button type="button" class="button-pad btn btn-danger">Unfavorite</button>
+                </a>
+                {% else %}
+                <a href="/tvshows/{{tvshow_details.id}}/add_favorite">
+                    <button type="button" class="button-pad btn btn-success">Favorite</button>
+                </a>
+                {% endif %} {% if current_user.is_watchlist(tvshow_details) %}
+                <a href="/tvshows/{{tvshow_details.id}}/remove_watchlist">
+                    <button type="button" class="button-pad btn btn-danger">Remove from watchlist</button>
+                </a>
+                {% else %}
+                <a href="/tvshows/{{tvshow_details.id}}/add_watchlist">
+                    <button type="button" class="button-pad btn btn-success">Add to watchlist</button>
+                </a>
+                {% endif %} {% endif %}
+            </div>
         </div>
-        
-        <div class="col-md-6">
-          {% if hide == True %}
-            <div class="key-title">Twitter Handle</div>
-            <div class="key-data"><a href="https://twitter.com/intent/tweet?screen_name={{ tvshow_details.twitter_handle }}" class="twitter-mention-button" data-show-count="false">Tweet to @{{ tvshow_details.twitter_handle }}</a> <a href="https://twitter.com/{{ tvshow_details.twitter_handle }}" class="twitter-follow-button" data-show-count="false">Follow @{{ tvshow_details.twitter_handle }}</a></li></div>
-    
-              <a class="twitter-timeline" data-width="400" data-height="500" data-link-color="#2B7BB9" href="https://twitter.com/{{ tvshow_details.twitter_handle }}">Tweets by {{ tvshow_details.tvshow }}</a>
-              <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-          {% endif %}
-        </div> <!-- col-md-4 -->
-      </div> <!-- row -->
-    </div> <!-- key-info -->
-  </div> <!-- main-info -->
-  {# Additional details below top box #}
-  <div class="key-title">Summary</div>
-  <div class="key-data">{{ tvshow_details.summary|safe }}</div>
-  <div class="key-title">Characters</div>
-  <div class="key-data">{{tvshow_details.characters}}</div>
-  <div class="key-title">Cast</div>
-  <div class="key-data">
-    {% for cast_members in tvshow_details.cast %}
-      {{ cast_members.name }}
-    {% endfor %}
-  </div>
-  <h1>Seasons</h1>
-  <div class="seasons">
-   {% for season in seasons %}
-     <div>
-      {% if not season.season_photo %}
-           <a href="/tvshows/{{season.tvshow_id}}/seasons"><img src="https://placeholdit.imgix.net/~text?txtsize=33&txt=Sorry,%20no%20image%20available&w=210&h=295"></a> 
-        {% else %}
-
-        <a href="/tvshows/{{season.tvshow_id}}/seasons"><img src="{{season.season_photo}}"></a>
-        {% endif %}
-        <a href="/tvshows/{{season.tvshow_id}}/seasons">Season {{ season.season_number }}</a>
     </div>
-  {% endfor %}
-  </div>
-  <h1>Episodes</h1>
-  <div class="episodes">
-  {% for episode in episodes %}
-  <div>
-    <a href="/tvshows/{{episode.tvshow_id}}/{{episode.season_number}}/{{episode.episode_number}}"><img src="{{episode.image}}"></a>
-    <a href="/tvshows/{{episode.tvshow_id}}/{{episode.season_number}}/{{episode.episode_number}}">{{ episode.episode_name }}</a>
-  </div>
-  {% endfor %}
-  </div>
-  
-  <!-- scrollable photos of tvshows -->
-  
+    <div class="row main-info">
+        <div class="col-md-3 tvshow-image">
+            <img src="{{ tvshow_photo.original_url }}">
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-md-6 key-info">
+                    <div class="key-title">Type</div>
+                    <div class="key-data">{{ tvshow_details.type_ }}</div>
+                    <div class="key-title">Language</div>
+                    <div class="key-data">{{ tvshow_details.language }}</div>
+                    <div class="key-title">Genres</div>
+                    <div class="key-data">
+                        {% for genre in tvshow_details.genres %} {{ genre.name }}
+                        <br> {% endfor %}
+                    </div>
+                    <div class="key-title">Status</div>
+                    <div class="key-data">{{ tvshow_details.status }}</div>
+                    <div class="key-title">Original Premiere Date</div>
+                    <div class="key-data">{{ tvshow_details.premiered }}</div>
+                    <div class="key-title">Scheduled</div>
+                    <div class="key-data">{{ tvshow_details.schedule_day }} at {{ tvshow_details.schedule_time }}</div>
+                    {% for external in tvshow_details.externals%}
+                    <div class="key-title">IMDB</div>
+                    <div class="key-data">
+                        <a href="http://www.imdb.com/title/{{external.imdb}}/"><img id="imdb-logo" src="http://icons.iconarchive.com/icons/icons8/windows-8/128/Cinema-Imdb-icon.png"></a>
+                    </div>
+                    <div class="key-title">theTVDB</div>
+                    <div class="key-data">
+                        <a href="http://thetvdb.com/?tab=series&id={{external.thetvdb}}"><img id="thetvdb-logo" src="https://lh6.googleusercontent.com/-UaIOmNeSrLE/AAAAAAAAAAI/AAAAAAAAACM/kcEXLiPchMs/photo.jpg"></a>
+                    </div>
+                    {% endfor %}
+                    <div class="key-title">Network Information</div>
+                    <div class="key-data">{{ network }}</div>
+                </div>
+                <div class="col-md-6">
+                    {% if hide == True %}
+                    <div class="key-title">Twitter Handle</div>
+                    <div class="key-data"><a href="https://twitter.com/intent/tweet?screen_name={{ tvshow_details.twitter_handle }}" class="twitter-mention-button" data-show-count="false">Tweet to @{{ tvshow_details.twitter_handle }}</a> <a href="https://twitter.com/{{ tvshow_details.twitter_handle }}" class="twitter-follow-button" data-show-count="false">Follow @{{ tvshow_details.twitter_handle }}</a></li>
+                    </div>
+                    <a class="twitter-timeline" data-width="400" data-height="500" data-link-color="#2B7BB9" href="https://twitter.com/{{ tvshow_details.twitter_handle }}">Tweets by {{ tvshow_details.tvshow }}</a>
+                    <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+                    {% endif %}
+                </div>
+                <!-- col-md-4 -->
+            </div>
+            <!-- row -->
+        </div>
+        <!-- key-info -->
+    </div>
+    <!-- main-info -->
+    {# Additional details below top box #}
+    <div class="key-title">Summary</div>
+    <div class="key-data">{{ tvshow_details.summary|safe }}</div>
+    <div class="key-title">Characters</div>
+    <div class="key-data">{{tvshow_details.characters}}</div>
+    <div class="key-title">Cast</div>
+    <div class="key-data">
+        {% for cast_members in tvshow_details.cast %} {{ cast_members.name }} {% endfor %}
+    </div>
+    <h1>Seasons</h1>
+    <div class="seasons">
+        {% for season in seasons %}
+        <div>
+            {% if not season.season_photo %}
+            <a href="/tvshows/{{season.tvshow_id}}/seasons"><img src="https://placeholdit.imgix.net/~text?txtsize=33&txt=Sorry,%20no%20image%20available&w=210&h=295"></a>
+            {% else %}
+            <a href="/tvshows/{{season.tvshow_id}}/seasons"><img src="{{season.season_photo}}"></a>
+            {% endif %}
+            <a href="/tvshows/{{season.tvshow_id}}/seasons">Season {{ season.season_number }}</a>
+        </div>
+        {% endfor %}
+    </div>
+    <h1>Episodes</h1>
+    <div class="episodes">
+        {% for episode in episodes %}
+        <div>
+            <a href="/tvshows/{{episode.tvshow_id}}/{{episode.season_number}}/{{episode.episode_number}}"><img src="{{episode.image}}"></a>
+            <a href="/tvshows/{{episode.tvshow_id}}/{{episode.season_number}}/{{episode.episode_number}}">{{ episode.episode_name }}</a>
+        </div>
+        {% endfor %}
+    </div>
+    <!-- scrollable photos of tvshows -->
 </div>
-
-
 {% endblock %}
-
-
 <!-- dsfasdfasdfasdfadfsadfasdfasdfasdfasdfasdf -->
 {% block scriptinclude %}
 <script>
 $('.seasons').slick({
-  infinite: true,
-  slidesToShow: 4,
-  slidesToScroll: 1
+    infinite: true,
+    slidesToShow: 4,
+    slidesToScroll: 1
 });
 </script>
 <script>
 $('.episodes').slick({
-  infinite: true,
-  slidesToShow: 4,
-  slidesToScroll: 1
+    infinite: true,
+    slidesToShow: 4,
+    slidesToScroll: 1
 });
 </script>
 {% endblock %}

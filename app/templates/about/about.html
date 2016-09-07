@@ -1,20 +1,14 @@
-{% extends "base.html" %}
-
-{% block bodyclass %}mybodyclass{% endblock %}
-
-{% block content %}
-
-  <div class="container">
+{% extends "base.html" %} {% block bodyclass %}mybodyclass{% endblock %} {% block content %}
+<div class="container">
     <h1>About</h1>
-      <h3>API's Used:</h3>
-      <ul>
+    <h3>API's Used:</h3>
+    <ul>
         <li><a href="http://www.tvmaze.com/api">TVmaze</a></li>
         <li><a href="https://api.guidebox.com/">guidebox</a></li>
         <li><a href="https://dev.twitter.com/">Twitter</a></li>
-      </ul>
-
-      <h3>Libraries Users:</h3>
-      <ul>
+    </ul>
+    <h3>Libraries Users:</h3>
+    <ul>
         <li><a href="https://github.com/pallets/flask">Flask</a></li>
         <li><a href="https://github.com/smurfix/flask-script">Flask Script</a></li>
         <li><a href="https://github.com/maxcountryman/flask-login">Flask Login</a></li>
@@ -27,8 +21,6 @@
         <li><a href="https://publish.twitter.com/#">Twitter Publish</a></li>
         <li><a href="http://getbootstrap.com/">Bootstrap</a></li>
         <li><a href="http://www.appelsiini.net/projects/lazyload">Lazyload</a></li>
-
-      </ul>
-  </div>
-
+    </ul>
+</div>
 {% endblock %}

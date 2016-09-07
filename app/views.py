@@ -162,7 +162,6 @@ def profile():
   favorites = current_user.tv_fav
   watchlist = current_user.watchlist
 
-
   return render_template("account/profile.html", 
                           title="Home",
                           favorites=favorites,

@@ -1,34 +1,20 @@
 {% extends "base.html" %} {% block bodyclass %}mybodyclass{% endblock %} {% block content %}
 <div class="container">
-    <!-- User Home -->
-    <h1>Welcome {{ current_user.get_name() }}</h1>
-    <h2>Currently Watching</h2>
-    <div class="currently-watching">
-        {% for favorite in favorites %} {% for tv_photo in favorite.tvshow_photos%} {% if favorite.status == "Running" %}
-        <a href="/tvshows/{{favorite.id}}"><img src="{{tv_photo.medium_url}}">{{favorite.tvshow}}</a>
-        {% endif %} {% endfor %} {% endfor %}
-    </div>
+    <h1>{{ user }}'s shared lists</h1>
     <h2>Favorites</h2>
     <div class="favorites">
-        {% for favorite in favorites %} {% for tv_photo in favorite.tvshow_photos%}
+        {% for favorite in shareable_favorites %} {% for tv_photo in favorite.tvshow_photos%}
         <a href="/tvshows/{{favorite.id}}"><img src="{{tv_photo.medium_url}}">{{favorite.tvshow}}</a>
         {% endfor %} {% endfor %}
     </div>
     <h2>Watch List</h2>
     <div class="watchlist">
-        {% for tvshow in watchlist %} {% for tv_photo in tvshow.tvshow_photos%}
+        {% for tvshow in shareable_watchlist %} {% for tv_photo in tvshow.tvshow_photos%}
         <a href="/tvshows/{{tvshow.id}}"><img src="{{tv_photo.medium_url}}">{{tvshow.tvshow}}</a>
         {% endfor %} {% endfor %}
     </div>
 </div>
 {% endblock %} {% block scriptinclude %}
-<script>
-$('.currently-watching').slick({
-    infinite: true,
-    slidesToShow: 4,
-    slidesToScroll: 1
-});
-</script>
 <script>
 $('.favorites').slick({
     infinite: true,

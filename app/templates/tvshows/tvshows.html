@@ -1,57 +1,68 @@
-{% extends "base.html" %}
-
-{% block content %}
-
+{% extends "base.html" %} {% block content %}
 <div class="container">
-  <h1>TVShows</h1>
-  <div class="button-group filter-button-group">
-    <button class="btn btn-info genre-pad" type="button" data-filter="*">Show All</button>
-    {% for genre in list_genres %}
-      <button class="btn btn-info genre-pad" type="button" data-filter=".{{genre}}">{{genre}}</button>
-    {% endfor %}
-  </div>
-  
-  <div class="tvshow-grid grid">
-    <div class="grid-sizer"></div>
-    {% for tvshow in tvshows %}
-      <div class="tvshow col-md-3{{ tvshow.get_genres() }} grid-item grid-item--width1">
-          <a href="/tvshows/{{ tvshow.id }}">
-          {% for pic in tvshow.tvshow_photos %}
-            <img src="{{pic.medium_url}}" onload="lzld(this)" > 
-          {% endfor %}
-          <!-- <div class="tvshow-name">{#tvshow.tvshow#}</div> -->
-          </a>
-      </div>
-    {% endfor %}
+    <h1>TVShows</h1>
+    <div class="button-group filter-button-group">
+        <button class="btn btn-info genre-pad" type="button" data-filter="*">Show All</button>
+        {% for genre in list_genres %}
+        <button class="btn btn-info genre-pad" type="button" data-filter=".{{genre}}">{{genre}}</button>
+        {% endfor %}
     </div>
-
+    <div class="tvshow-grid grid">
+        <div class="grid-sizer"></div>
+        {% for tvshow in tvshows %}
+        <div class="tvshow col-md-3{{ tvshow.get_genres() }} grid-item grid-item--width1">
+            <a href="/tvshows/{{ tvshow.id }}">
+          {% for pic in tvshow.tvshow_photos %}
+            <img src="{{pic.medium_url}}" onload="lzld(this)">
+            <div class="control-rows"> 
+            {% if current_user.is_authenticated %}
+              {% if current_user.is_favorite(tvshow) %}
+                <a href="/tvshows/{{tvshow.id}}/remove_favorite"><button type="button" class="btn btn-danger">Unfavorite</button></a> {% else %}
+            <a href="/tvshows/{{tvshow.id}}/add_favorite">
+                <button type="button" class="btn btn-success">Favorite</button>
+            </a>
+            {% endif %} {% if current_user.is_watchlist(tvshow) %}
+            <a href="/tvshows/{{tvshow.id}}/remove_watchlist">
+                <button type="button" class="btn btn-danger">- Watchlist</button>
+            </a>
+            {% else %}
+            <a href="/tvshows/{{tvshow.id}}/add_watchlist">
+                <button type="button" class="btn btn-success">+ Watchlist</button>
+            </a>
+            {% endif %} {% endif %}
+        </div>
+        {% endfor %}
+        <!-- <div class="tvshow-name">{#tvshow.tvshow#}</div> -->
+        </a>
+    </div>
+    {% endfor %}
 </div>
-
-{% endblock %}
-
-{% block scriptinclude %}
+</div>
+{% endblock %} {% block scriptinclude %}
 <script>
 var $container = $('#container');
 
-$(window).load(function(){ 
+$(window).load(function() {
 
     var $grid = $('.grid').isotope({
-    // options
+        // options
     });
     // filter items on button click
-    $('.filter-button-group').on( 'click', 'button', function() {
-      var filterValue = $(this).attr('data-filter');
-      $grid.isotope({ filter: filterValue });
+    $('.filter-button-group').on('click', 'button', function() {
+        var filterValue = $(this).attr('data-filter');
+        $grid.isotope({
+            filter: filterValue
+        });
     });
 
     $('.grid').isotope({
-      // set itemSelector so .grid-sizer is not used in layout
-      itemSelector: '.grid-item',
-      percentPosition: true,
-      masonry: {
-        // use element for option
-        columnWidth: '.grid-sizer'
-      }
+        // set itemSelector so .grid-sizer is not used in layout
+        itemSelector: '.grid-item',
+        percentPosition: true,
+        masonry: {
+            // use element for option
+            columnWidth: '.grid-sizer'
+        }
     });
 
 });

@@ -1,31 +1,19 @@
-{% extends "base.html" %}
-
-{% block bodyclass %}mybodyclass{% endblock %}
-
-{% block content %}
-
-  <div class="container">
+{% extends "base.html" %} {% block bodyclass %}mybodyclass{% endblock %} {% block content %}
+<div class="container">
     <h1>Homepage</h1>
-    
-    <h2>{{genre}} TVShows Currently Airing</h2>
+    <h3>{{genre}} TVShows Currently Airing</h3>
     <div class="genre">
-    {% for tvshow in tvshows %}
-      {#tvshow.tvshow#}
-      {% for photo in tvshow.tvshow_photos%}
-      <a href="/tvshows/{{ tvshow.id }}"><img src="{{photo.medium_url}}"></a>
-      {% endfor%}
-      
-    {% endfor %}
+        {% for tvshow in tvshows %} {#tvshow.tvshow#} {% for photo in tvshow.tvshow_photos%}
+        <a href="/tvshows/{{ tvshow.id }}"><img src="{{photo.medium_url}}"></a>
+        {% endfor%} {% endfor %}
     </div>
-  </div>
-
-{% endblock %}
-{% block scriptinclude %}
+</div>
+{% endblock %} {% block scriptinclude %}
 <script>
 $('.genre').slick({
-  infinite: true,
-  slidesToShow: 4,
-  slidesToScroll: 1
+    infinite: true,
+    slidesToShow: 4,
+    slidesToScroll: 1
 });
 </script>
 {% endblock %}

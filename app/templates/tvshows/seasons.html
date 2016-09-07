@@ -1,34 +1,25 @@
-{% extends "base.html" %}
-
-{% block content %}
-
+{% extends "base.html" %} {% block content %}
 <div class="container">
-
-   <h1>All Seasons for {{ title }}</h1>
-   <div class="seasons">
-   {% for season in seasons %}
-        {% if season.season_photo %}
-          <img class="season-photo" src="{{season.season_photo}}">
-        {% else %}  
-          <img class="season-photo" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=Sorry,%20no%20image%20available&w=210&h=295">
-        {% endif %}
+    <h1>All Seasons for {{ title }}</h1>
+    <div class="seasons">
+        {% for season in seasons %} {% if season.season_photo %}
+        <img class="season-photo" src="{{season.season_photo}}"> {% else %}
+        <img class="season-photo" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=Sorry,%20no%20image%20available&w=210&h=295"> {% endif %}
         <div id="season-details">
-          <li><b>Season Number:</b> {{ season.season_number }}</li>
-          <li><b>Total Episodes:</b> <a href="/tvshows/{{season.tvshow_id}}/{{season.season_number}}/episodes">{{season.total_episodes}}</a></li>
-          <li><b>Season Premiere Date:</b> {{season.premiere_date}}</li>
-          <li><b>Season End Date:</b> {{season.end_date}}</li>
-          </div>
-      {% endfor %}
-  </div>
+            <li><b>Season Number:</b> {{ season.season_number }}</li>
+            <li><b>Total Episodes:</b> <a href="/tvshows/{{season.tvshow_id}}/{{season.season_number}}/episodes">{{season.total_episodes}}</a></li>
+            <li><b>Season Premiere Date:</b> {{season.premiere_date}}</li>
+            <li><b>Season End Date:</b> {{season.end_date}}</li>
+        </div>
+        {% endfor %}
+    </div>
 </div>
-
-{% endblock %}
-{% block scriptinclude %}
+{% endblock %} {% block scriptinclude %}
 <script>
 $('.seasons').slick({
-  infinite: true,
-  slidesToShow: 4,
-  slidesToScroll: 2
+    infinite: true,
+    slidesToShow: 4,
+    slidesToScroll: 2
 });
 </script>
 {% endblock %}

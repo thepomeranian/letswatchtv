@@ -5,15 +5,27 @@
 @import 'fonts';
 
 h1 {
-  color: blue;
-}
-
-p{
-  color: pink;
+  color: #333333;
 }
 
 body{
   font-family: 'Roboto', sans-serif;
+  background-color: #FEFDFD;
+  color: #333333;
+}
+
+a {
+  // color: rgba(0, 0, 0, 0.5);
+  // color:  #5C98FF;
+  color: #555555;
+}
+
+a:hover {
+  color: #999999;
+}
+
+#search {
+  color: #555555;
 }
 
 // Change the color of slick arrows
@@ -21,12 +33,16 @@ body{
     color: #000;
 }
 
+.control-rows {
+  align: center;
+}
+
 .show-details {
   padding-bottom: 50px;
 }
 
 .main-info {
-    margin: 0 auto;
+  margin: 0 auto;
 }
 
 .key-title {
@@ -82,4 +98,16 @@ body{
 #episode-summary {
   text-align: justify;
   padding: 10px;
+}
+
+#imdb-logo {
+  margin-top: -10px;
+  margin-bottom: -10px;
+  width: 40px;
+  height: 40px;
+}
+
+#thetvdb-logo {
+  width: 40px;
+  height: auto;
 }

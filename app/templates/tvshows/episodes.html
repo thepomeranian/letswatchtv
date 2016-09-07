@@ -1,35 +1,30 @@
-{% extends "base.html" %}
-
-{% block content %}
-
+{% extends "base.html" %} {% block content %}
 <div class="container">
- <h1>Episodes for Season {{ season_number }} of {{ title }}</h1>
- <div class="episodes">
-  {% for episode in episodes %}
-  <div class="episode-photo">
-    <img src="{{episode.image}}">
-  </div>
-  <div>
-    <li><b>Episode Name: </b><a href="/tvshows/{{episode.tvshow_id}}/{{episode.season_number}}/{{episode.episode_number}}">{{ episode.episode_name }}</a></li>
-    <li><b>Airdate: </b> {{episode.airdate}}</li>
-    <li><b>Runtime: </b> {{episode.airtime}}</li>
-    <br>
-    <b>Episode Summary:</b>
-      <div id="episode-summary">  
-          {{episode.summary | safe}}
-      </div>  
+    <h1>Episodes for Season {{ season_number }} of {{ title }}</h1>
+    <div class="episodes">
+        {% for episode in episodes %}
+        <div class="episode-photo">
+            <img src="{{episode.image}}">
+        </div>
+        <div>
+            <li><b>Episode Name: </b><a href="/tvshows/{{episode.tvshow_id}}/{{episode.season_number}}/{{episode.episode_number}}">{{ episode.episode_name }}</a></li>
+            <li><b>Airdate: </b> {{episode.airdate}}</li>
+            <li><b>Runtime: </b> {{episode.airtime}}</li>
+            <br>
+            <b>Episode Summary:</b>
+            <div id="episode-summary">
+                {{episode.summary | safe}}
+            </div>
+        </div>
+        {% endfor %}
     </div>
-  {% endfor %}
-  </div>
 </div>
-
-{% endblock %}
-{% block scriptinclude %}
+{% endblock %} {% block scriptinclude %}
 <script>
 $('.episodes').slick({
-  infinite: true,
-  slidesToShow: 4,
-  slidesToScroll: 2
+    infinite: true,
+    slidesToShow: 4,
+    slidesToScroll: 2
 });
 </script>
 {% endblock %}

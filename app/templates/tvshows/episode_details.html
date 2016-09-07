@@ -1,28 +1,19 @@
-{% extends "base.html" %}
-
-{% block content %}
-
+{% extends "base.html" %} {% block content %}
 <div class="container">
- <h1>{{ episode.episode_name }}</h1>
- <strong>TVShow: {{ title }} Season: {{season_number}} Episode Number: {{episode_number}} </strong>
-
- <div class="row">
-   <div class="col-md-3">
-      <img src="{{ episode.image }}">
-   </div>
-
-    <div class="episode-details col-md-9">
-     <li><b>Season: </b>{{episode.season_number}}</li>
-     <li><b>Episode: </b>{{episode.episode_number}}</li>
-     <li><b>Airdate: </b>{{episode.airdate}}</li>
-     <li><b>Airtime: </b>{{episode.airtime}}</li>
+    <h1>{{ episode.episode_name }}</h1>
+    <strong>TVShow: {{ title }} Season: {{season_number}} Episode Number: {{episode_number}} </strong>
+    <div class="row">
+        <div class="col-md-3">
+            <img src="{{ episode.image }}">
+        </div>
+        <div class="episode-details col-md-9">
+            <li><b>Season: </b>{{episode.season_number}}</li>
+            <li><b>Episode: </b>{{episode.episode_number}}</li>
+            <li><b>Airdate: </b>{{episode.airdate}}</li>
+            <li><b>Airtime: </b>{{episode.airtime}}</li>
+        </div>
     </div>
-  </div>
-
-  <div class="row">
-      <b>Episode Summary:</b>
-      {{episode.summary | safe}}
-  </div>
-
-
-{% endblock %}
+    <div class="row">
+        <b>Episode Summary:</b> {{episode.summary | safe}}
+    </div>
+    {% endblock %}
