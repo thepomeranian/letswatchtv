@@ -73,12 +73,12 @@ People sometimes ask me: _thehamster what kinds of frameworks, libraries, and to
 - requests / urllib3
 - Werkzeug
 
-** Server Side JS **
+**Server Side JS**
 - npm - Node's package manager for managing js dependencies
 - gulp.js - Task automator, used for SASS, JS, and livereload
 - bower - Package manager for frontend libraries
 
-** APIs, Libraries, and Frontend**
+**APIs, Libraries, and Frontend**
 - SASS - Precompiled CSS library with more power & flexibility
 - Twitter API - Fetching various pieces of information from Twitter via their API
 - Bootstrap - Frontend framework
