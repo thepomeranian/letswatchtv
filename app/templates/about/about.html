@@ -1,26 +1,82 @@
 {% extends "base.html" %} {% block bodyclass %}mybodyclass{% endblock %} {% block content %}
 <div class="container">
-    <h1>About</h1>
+    <h1>About LetsWatchTV</h1>
     <h3>API's Used:</h3>
     <ul>
-        <li><a href="http://www.tvmaze.com/api">TVmaze</a></li>
-        <li><a href="https://api.guidebox.com/">guidebox</a></li>
-        <li><a href="https://dev.twitter.com/">Twitter</a></li>
+        <li><a href="http://www.tvmaze.com/api">TVmaze - TVShow information</a></li>
+        <li><a href="https://api.guidebox.com/">guidebox - twitter handles</a></li>
+        <li><a href="https://dev.twitter.com/">Twitter - Fetching various pieces of information from Twitter via their API</a></li>
     </ul>
     <h3>Libraries Users:</h3>
     <ul>
+        <li><a href="http://getbootstrap.com/">Bootstrap - Frontend framework</a></li>
+        <li><a href="http://www.appelsiini.net/projects/lazyload">lazyload.js - Lazyloading images</a></li>
+        <li>SASS - Precompiled CSS library with more power & flexibility</li>
+        <li><a href="https://codeseven.github.io/toastr/">
+        Toastr - toast notification library</a></li>
+        <li><a href="http://kenwheeler.github.io/slick/"> Slick carousel - Image carousels</a></li>
+        <li><a href="http://isotope.metafizzy.co/">Isotope / masonry - sorting & filtering</a></li>
+    </ul>
+    <h3>Python</h3>
+    <ul>
         <li><a href="https://github.com/pallets/flask">Flask</a></li>
-        <li><a href="https://github.com/smurfix/flask-script">Flask Script</a></li>
-        <li><a href="https://github.com/maxcountryman/flask-login">Flask Login</a></li>
-        <li><a href="https://github.com/lepture/flask-wtf">Flask WTF</a></li>
         <li><a href="https://github.com/miguelgrinberg/Flask-Migrate">Flask Migrate</a></li>
-        <li><a href="https://github.com/mitsuhiko/flask-sqlalchemy">Flask SQLAlchemy</a></li>
         <li><a href="http://alembic.zzzcomputing.com/en/latest/">Alembic</a></li>
-        <li><a href="https://github.com/pallets/werkzeug">Werkzeug</a></li>
+        <li><a href="https://github.com/maxcountryman/flask-login">Flask Login</a></li>
+        <li><a href="https://github.com/lepture/flask-wtf">Flask WTF (What The Form)</a></li>
+        <li><a href="https://github.com/mitsuhiko/flask-sqlalchemy">Flask SQLAlchemy</a></li>
         <li><a href="https://github.com/kennethreitz/requests">Requests</a></li>
         <li><a href="https://publish.twitter.com/#">Twitter Publish</a></li>
-        <li><a href="http://getbootstrap.com/">Bootstrap</a></li>
-        <li><a href="http://www.appelsiini.net/projects/lazyload">Lazyload</a></li>
+        <li><a href="https://github.com/pallets/werkzeug">Werkzeug</a></li>
+    </ul>
+    <h3>Server Side JS</h3>
+    <ul>
+        <li><a href="https://www.npmjs.com/">
+        npm - Node's package manager for managing js dependencies</a></li>
+        <li><a href="http://gulpjs.com/">
+        gulp.js - Task automator, used for SASS, JS, and livereload</a></li>
+        <li><a href="https://bower.io/">
+        bower - Package manager for frontend libraries</a></li>
+    </ul>
+    <h1>About Frances</h1>
+    <h3>Bio</h3>
+    <p>Frances created LetsWatchTV for Hackbright Academy's individual capstone project. She is an aspiring full stack developer and will be utilizing this project to test out different front end and back end libraries as well as development/deployment tools in order to strengthen her knowledge. She is currently seeking front end/back end/full stack employment opportunties all around the San Francisco Bay Area as well as Boston, MA, and NYC, NY.</p>
+    <h3>Contact</h3>
+    <p>To contact Frances about employment opportunities as well as feedback/recommendations for her project:</p>
+    Email: <a href="mailto:frances.liu168@gmail.com">frances.liu168@gmail.com</a>
+    <br> LinkedIn: <a href="https://www.linkedin.com/in/frances-liu">frances-liu</a>
+    <br> GitHub: <a href="https://github.com/thepomeranian">thepomeranian</a>
+    <br> Twitter: <a href="https://twitter.com/frances_liu168">frances_liu168</a>
+    <br>
+    <h3>Backlog</h3>
+    <ul>
+        <li>Live Twitter Stream</li>
+        <ul>
+            <p>Originally, Frances planned on having each tvshow have their twitter feed aggregate in real time on the tvshow details page. However, due to inability to have this possible on all tvshows it will be in the list of features to be implemented in the future when more time is allowed.</p>
+        </ul>
+        <li>Visualization of Tweets/Time and Sentiment Analysis</li>
+        <ul>
+            <p>Along with the live twitter stream, Frances also wanted to dive into visualizating all the the tweets that came in within a specific time period as an indicator of populatarity (assuming that the raw number of tweets is equivalent to the popularity of a show) and sentiment analysis of tweets to determine if the tvshow's rating from IMDB and RottonTomato were true. Due to the nature of machine learning being a huge topic of study, this was also pushed further back when more time is available.</p>
+            <li>Pending Work:</li>
+            <ul>
+                <p>Currently, all of the tweets from the Summer 2016 Brazil Olympics have been saved.</p>
+                <li>Data Wrangling</li>
+                <ul>
+                    <li>Remove spam tweets</li>
+                    <li>Remove tweets that only have retweets of twitter handles</li>
+                    <li>Remove all tweets that are not English</li>
+                </ul>
+            </ul>
+        </ul>
+        <li>Sharable Links</li>
+        <ul>
+            <p>Allow users to share tvshows that they've favorited or are currently watching and the ability to mark a list as private or public</p>
+        </ul>
+        <li>Implement typeahead/fuzzysearch</li>
+        <li>Watch Now!</li>
+        <ul>
+            <p>Unfortunately, Netflix no longer has a public API, Hulu doesn't have a public API at all, and Apple's API is in XML there was limited time to look places that a user can stream a tvshow or purchase a tvshow (legally). It appears that other API's that have had access or still have access to the API's don't have public API's so this will be in the backlog until there is a public API.</p>
+        </ul>
     </ul>
 </div>
 {% endblock %}
