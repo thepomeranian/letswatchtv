@@ -54,10 +54,10 @@ def tvshows():
 
 def genre_list(genre_list):
   """Returns lowercase genres in a list"""
-    results = []
-    for genre in genre_list:
-      results.append(genre.name.lower())
-    return results 
+  results = []
+  for genre in genre_list:
+    results.append(genre.name.lower())
+  return results 
 
 
 @app.route('/tvshows/<tvshow_id>', methods = ['GET', 'POST'])
