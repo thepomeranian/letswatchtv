@@ -28,6 +28,7 @@ def home():
 
 @app.route('/search', methods=['GET','POST'])
 def search():
+  """Searched for a tvshow in the database by trying to match the substring"""
   if request.method=='POST':
     search_term = request.form.get('search_term')
     tvshows = TVShow.query.filter(TVShow.tvshow.match(search_term)).all()
@@ -52,6 +53,7 @@ def tvshows():
                           tvshows=tvshows[:100])
 
 def genre_list(genre_list):
+  """Returns lowercase genres in a list"""
     results = []
     for genre in genre_list:
       results.append(genre.name.lower())
@@ -83,6 +85,7 @@ def tvshow_details(tvshow_id):
 
 @app.route('/tvshows/<tvshow_id>/add_favorite', methods = ['GET', 'POST'])
 def add_favorite(tvshow_id):
+  """Adds a tvshow favorite relationship"""
   tvshow = TVShow.query.get(tvshow_id)
   current_user.favorite_show(tvshow)
   flash("Added to favorites", 'success')
@@ -92,6 +95,7 @@ def add_favorite(tvshow_id):
 
 @app.route('/tvshows/<tvshow_id>/remove_favorite', methods = ['GET', 'POST'])
 def remove_favorite(tvshow_id):
+  """Removes a tvshow favorite relationship"""
   tvshow = TVShow.query.get(tvshow_id)
   current_user.unfavorite_show(tvshow)
   flash("Removed from favorites", 'danger')
@@ -101,6 +105,7 @@ def remove_favorite(tvshow_id):
 
 @app.route('/tvshows/<tvshow_id>/add_watchlist', methods = ['GET', 'POST'])
 def add_watchlist(tvshow_id):
+  """Adds a tvshow watchlist relationship"""
   tvshow = TVShow.query.get(tvshow_id)
   current_user.add_watchlist(tvshow)
   flash("Added to watchlist", 'success')
@@ -110,6 +115,7 @@ def add_watchlist(tvshow_id):
 
 @app.route('/tvshows/<tvshow_id>/remove_watchlist', methods = ['GET', 'POST'])
 def remove_watchlist(tvshow_id):
+  """Removes a tvshow watchlist relationship"""
   tvshow = TVShow.query.get(tvshow_id)
   current_user.remove_watchlist(tvshow)
   flash("Removed from watchlist", 'danger')
@@ -119,6 +125,7 @@ def remove_watchlist(tvshow_id):
 
 @app.route('/tvshows/<tvshow_id>/seasons')
 def season(tvshow_id):
+  """Returns all seasons for a tvshow"""
   tvshow_details = TVShow.query.filter_by(id=tvshow_id).one()
   seasons        = Season.query.filter_by(tvshow_id = tvshow_id).all()
   return render_template("tvshows/seasons.html",
@@ -128,6 +135,7 @@ def season(tvshow_id):
 
 @app.route('/tvshows/<tvshow_id>/<season_number>/episodes')
 def episode(tvshow_id,season_number):
+  """Returns all episodes for a tvshow"""
   tvshow_details = TVShow.query.filter_by(id=tvshow_id).one()
   episodes       = Episode.query.filter_by(tvshow_id = tvshow_id, season_number = season_number).all()
   return render_template("tvshows/episodes.html",
@@ -138,6 +146,7 @@ def episode(tvshow_id,season_number):
 
 @app.route('/tvshows/<tvshow_id>/<season_number>/<episode_number>')
 def episode_details(tvshow_id,season_number,episode_number):
+  """Returns a tvshow's specific details"""
   tvshow_details = TVShow.query.filter_by(id=tvshow_id).one()
   episode        = Episode.query.filter_by(tvshow_id = tvshow_id, season_number = season_number, episode_number = episode_number).one()
   return render_template("tvshows/episode_details.html",
@@ -158,7 +167,6 @@ def about():
 def profile():
   """Returns user's homepage/landing page"""
 
-  # user = User.query.filter_by(email=current_user.email).one()
   favorites = current_user.tv_fav
   watchlist = current_user.watchlist
 
