@@ -1,12 +1,44 @@
 {% extends "base.html" %} {% block bodyclass %}mybodyclass{% endblock %} {% block content %}
 <div class="container">
     <h1>Homepage</h1>
+    <h2>Here's a sample slider of tv shows to watch</h2>
     <h3>{{genre}} TVShows Currently Airing</h3>
     <div class="genre">
         {% for tvshow in tvshows %} {#tvshow.tvshow#} {% for photo in tvshow.tvshow_photos%}
         <a href="/tvshows/{{ tvshow.id }}"><img src="{{photo.medium_url}}"></a>
         {% endfor%} {% endfor %}
     </div>
+    <h3>Backlog</h3>
+    <ul>
+        <li>Live Twitter Stream</li>
+        <ul>
+            <p>Originally, Frances planned on having each tvshow have their twitter feed aggregate in real time on the tvshow details page. However, due to inability to have this possible on all tvshows it will be in the list of features to be implemented in the future when more time is allowed.</p>
+        </ul>
+        <li>Visualization of Tweets/Time and Sentiment Analysis</li>
+        <ul>
+            <p>Along with the live twitter stream, Frances also wanted to dive into visualizating all the the tweets that came in within a specific time period as an indicator of populatarity (assuming that the raw number of tweets is equivalent to the popularity of a show) and sentiment analysis of tweets to determine if the tvshow's rating from IMDB and RottonTomato were true. Due to the nature of machine learning being a huge topic of study, this was also pushed further back when more time is available.</p>
+            <li>Pending Work:</li>
+            <ul>
+                <p>Currently, all of the tweets from the Summer 2016 Brazil Olympics have been saved.</p>
+                <li>Data Wrangling</li>
+                <ul>
+                    <li>Remove spam tweets</li>
+                    <li>Remove tweets that only have retweets of twitter handles</li>
+                    <li>Remove all tweets that are not English</li>
+                </ul>
+            </ul>
+        </ul>
+        <li>Sharable Links</li>
+        <ul>
+            <p>Allow users to share tvshows that they've favorited or are currently watching and the ability to mark a list as private or public</p>
+        </ul>
+        <li>Mobile Friendly</li>
+        <li>Implement typeahead/fuzzysearch</li>
+        <li>Watch Now!</li>
+        <ul>
+            <p>Unfortunately, Netflix no longer has a public API, Hulu doesn't have a public API at all, and Apple's API is in XML there was limited time to look places that a user can stream a tvshow or purchase a tvshow (legally). It appears that other API's that have had access or still have access to the API's don't have public API's so this will be in the backlog until there is a public API.</p>
+        </ul>
+    </ul>
 </div>
 {% endblock %} {% block scriptinclude %}
 <script>

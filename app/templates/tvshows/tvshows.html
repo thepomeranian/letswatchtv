@@ -2,6 +2,7 @@
 <div class="container">
     <h1>TVShows</h1>
     <div class="button-group filter-button-group">
+    <h5>Sort by Genre:</h5>
         <button class="btn btn-info genre-pad" type="button" data-filter="*">Show All</button>
         {% for genre in list_genres %}
         <button class="btn btn-info genre-pad" type="button" data-filter=".{{genre}}">{{genre}}</button>
